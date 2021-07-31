@@ -1,6 +1,6 @@
 /* 定制化代码样式，包括行内代码和代码块 */
 .gdoc-markdown code {
-    font-family: Consolas,Monaco,Menlo,dejavu sans mono,bitstream vera sans mono,courier new,monospace
+    font-family: Monaco,Consolas,Menlo,dejavu sans mono,bitstream vera sans mono,courier new,monospace
 }
 
 /* 定制化行内代码样式 */

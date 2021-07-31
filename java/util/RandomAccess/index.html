@@ -2,7 +2,6 @@
 <html lang="en" class="color-toggle-hidden">
 
 <head>
-	<meta name="generator" content="Hugo 0.86.1" />
     <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light dark" />
@@ -11,11 +10,16 @@
 
 
 
-    <meta name="description" content="JDK8源码阅读笔记">
+    <meta name="description" content="List 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。
+当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
+公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
+循环1：
+1 2  for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i);   循环2：
+1 2  for (Iterator i=list.iterator(); i.hasNext(); ) i.next();   该接口也是Java集合框架成员。">
 
 
 
-    <title>JDK8源码阅读笔记</title>
+    <title>RandomAccess | JDK8源码阅读笔记</title>
 
     <link rel="icon" href="/jdk8-src-note/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -36,7 +40,6 @@
 <link rel="preload" href="/jdk8-src-note/custom.css" as="style">
 <link rel="stylesheet" href="/jdk8-src-note/custom.css" media="all">
 
-<link rel="alternate" type="application/rss+xml" href="https://hongmao.run/jdk8-src-note/index.xml" title="JDK8源码阅读笔记" />
 
 
 <!-- Made with Geekdoc theme https://github.com/thegeeklab/hugo-geekdoc -->
@@ -423,7 +426,7 @@
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
-                    class="gdoc-nav__entry ">
+                    class="gdoc-nav__entry is-active">
                     RandomAccess
                 </a>
             </span>
@@ -489,7 +492,31 @@
             
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>JDK8源码阅读笔记</span><meta itemprop='position' content='2' /></li>
+        
+        
+        
+        
+    
+    
+        
+        
+        
+        
+    
+    
+        
+        
+        
+        
+    
+    
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>RandomAccess</span><meta itemprop='position' content='5' /></li>
+    
+
+    
+
+    
+
     
 
         </ol>
@@ -498,9 +525,36 @@
     
 </div>
 
+
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>JDK8源码阅读笔记</h1>
-        
+        <h1>RandomAccess</h1>
+        <p><code>List</code> 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。</p>
+<p>当用于操纵随机访问列表（例如<code>ArrayList</code>）的最佳算法应用于顺序访问列表（例如<code>LinkedList</code>）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过<code>instanceof</code>判断），并在必要时更改其行为以确保可接受的性能。</p>
+<p>公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些<code>List</code>实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的<code>List</code>实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时<code>List</code>实现应实现此接口：</p>
+<p>循环1：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
+		<span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">i</span><span style="color:#000">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>循环2：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
+		<span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>该接口也是Java集合框架成员。</p>
+
 
     </article>
 
@@ -689,6 +743,9 @@
             
 
             
+                
+                
+            
 
             
         
@@ -711,6 +768,8 @@
     
     
         <span class="gdoc-page__nav">
+            
+                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/ListIterator/" title="ListIterator"> ListIterator</a>
             
         </span>
         <span class="gdoc-page__nav">

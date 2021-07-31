@@ -6,7 +6,21 @@
     <description>Recent content on JDK8源码阅读笔记</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Jul 2021 18:23:58 +0800</lastBuildDate><atom:link href="https://hongmao.run/jdk8-src-note/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 31 Jul 2021 10:32:17 +0800</lastBuildDate><atom:link href="https://hongmao.run/jdk8-src-note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RandomAccess</title>
+      <link>https://hongmao.run/jdk8-src-note/java/util/RandomAccess/</link>
+      <pubDate>Sat, 31 Jul 2021 10:32:17 +0800</pubDate>
+      
+      <guid>https://hongmao.run/jdk8-src-note/java/util/RandomAccess/</guid>
+      <description>List 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。
+当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
+公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
+循环1：
+1 2  for (int i=0, n=list.size(); i &amp;lt; n; i++) list.get(i);   循环2：
+1 2  for (Iterator i=list.iterator(); i.hasNext(); ) i.next();   该接口也是Java集合框架成员。</description>
+    </item>
+    
     <item>
       <title>AbstractList</title>
       <link>https://hongmao.run/jdk8-src-note/java/util/AbstractList/</link>
