@@ -5,7 +5,7 @@
     <link>https://hongmao.run/jdk8-src-note/java/util/</link>
     <description>Recent content in util on JDK8源码阅读笔记</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
+    <language>zh-cn</language>
     <lastBuildDate>Sun, 18 Jul 2021 14:14:04 +0800</lastBuildDate><atom:link href="https://hongmao.run/jdk8-src-note/java/util/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>RandomAccess</title>
