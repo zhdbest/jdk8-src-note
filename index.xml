@@ -17,8 +17,8 @@
 当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
 公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
 循环1：
-1 2  for (int i=0, n=list.size(); i &amp;lt; n; i++) list.get(i);   循环2：
-1 2  for (Iterator i=list.iterator(); i.hasNext(); ) i.next();   该接口也是Java集合框架成员。</description>
+for (int i=0, n=list.size(); i &amp;lt; n; i++) list.get(i); 循环2：
+for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集合框架成员。</description>
     </item>
     
     <item>
@@ -27,21 +27,7 @@
       <pubDate>Sun, 18 Jul 2021 18:23:58 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/AbstractList/</guid>
-      <description>此类提供List接口的基本实现，以最大程度地减少实现支持“随机访问”数据存储（例如数组）所需的工作。对于顺序访问数据（例如链表），应优先使用AbstractSequentialList类。
-要实现不可修改的列表，编程者仅需扩展此类并为get和List的size方法提供实现。
-要实现可修改的列表，编程者必须另外重写set方法（否则将抛出UnsupportedOperationException）。如果列表是可变大小的，则程序员必须另外重写add和remove方法。
-根据Collection接口规范中的建议，编程者通常应提供一个void（无参数）的构造函数。
-与其他抽象集合的实现不同，编程者不必提供迭代器实现。迭代器和列表迭代器由此类在“随机访问”方法之上实现：
-get、set、add、remove。
-此类中每个非抽象方法的文档都详细描述了其实现。如果正在实现的集合允许更有效的实现，则可以覆盖这些方法中的每一个。
-该类是Java集合框架的成员。
-1. protected AbstractList()    唯一构造函数。 （用于子类构造函数的调用，通常是隐式的。）
-源码如下：
-1 2  protected AbstractList() { }   2. public boolean add(E e)    将指定的元素追加到此列表的末尾（可选操作）。
-支持此操作的列表可能会限制哪些元素可以添加到此列表。特别是，某些列表将拒绝添加空元素，而另一些列表将对可能添加的元素类型施加限制。列表类应在其文档中明确指定对可以添加哪些元素的所有限制。
-该方法的实现调用了add(int index, E element)方法，add(int index, E element)的默认实现是抛出UnsupportedOperationException，所以如果不重写它，那么调用当前方法也会抛出UnsupportedOperationException。
-源码如下：
-1 2 3 4  public boolean add(E e) { add(size(), e); return true; }   3. abstract public E get(int index);    获取列表在指定索引位置的元素。</description>
+      <description>1. protected AbstractList() 2. public boolean add(E e) 3. abstract public E get(int index); 4. public E set(int index, E element) 5. public void add(int index, E element) 6. public E remove(int index) 7. public int indexOf(Object o) 8. public int lastIndexOf(Object o) 9. public void clear() 10. public boolean addAll(int index, Collection&amp;lt;? extends E&amp;gt; c) 11. public Iteratoriterator() 12. public ListIteratorlistIterator() 13. public ListIteratorlistIterator(final int index) 14. private class Itr implements Iterator  14.</description>
     </item>
     
     <item>
@@ -50,24 +36,7 @@ get、set、add、remove。
       <pubDate>Sun, 18 Jul 2021 18:23:47 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/List/</guid>
-      <description>有序集合（也称为sequence）。该接口的用户可以精确控制列表中每个元素的插入位置。用户可以通过其整数索引（列表中的位置）访问元素，并在列表中搜索元素。
-与集合不同，列表通常允许重复的元素。更正式地说，列表通常允许成对的元素e1和e2，它们满足e1.equals(e2)，并且如果允许空值，它们通常允许多个空元素。有人希望通过在用户尝试插入重复元素时抛出运行时异常来实现禁止重复的列表，这也并非不可行，但我们希望这种用法很少见。
-List接口在已熟知的Collection 接口的规定之外有一些额外的规定，在iterator，add，remove，equals和hashCode方法上。为了方便起见，还包括其他继承方法的声明。
-List接口提供了四种使用位置（索引）访问列表元素的方法。列表（如Java数组）是从零开始的。请注意，对于某些实现（例如，LinkedList类），这些操作可能在时间上与索引值成比例地执行。因此，如果调用者不知道实现，则遍历列表中的元素通常比对其进行索引更可取。
-List接口提供了一个特殊的迭代器，称为ListIterator，除Iterator接口的常规操作外，它还允许元素插入和替换以及双向访问。它还提供了一种获取列表迭代器的方法，该列表迭代器从列表中的指定位置开始。
-List接口提供了两种搜索指定对象的方法。从性能的角度来看，应谨慎使用这些方法。在许多实现中，它们将执行昂贵的线性搜索。
-List接口提供了两种方法，可以有效地在列表中的任意点插入和删除多个元素。
-注意：虽然允许列表包含自己作为元素，但建议格外小心：equals和hashCode方法在这样的列表上不再有很好的定义。
-一些列表实现对它们可能包含的元素有限制。例如，某些实现禁止使用null元素，而某些实现对其元素类型进行限制。尝试添加不合格的元素会引发未经检查的异常，通常为NullPointerException或ClassCastException。尝试查询不合格元素的存在可能会引发异常，或者可能仅返回false。一些实现将表现出前一种行为，而某些将表现出后者。更一般地，尝试对不合格元素进行操作，该操作的完成不会导致将不合格元素插入列表中，这可能会导致异常或成功，具体取决于实现方式。此类异常在此接口的规范中标记为“可选”。
-该接口是Java集合框架的成员。
-1. int size();    返回此列表中的元素数。如果此列表包含多于 Integer.MAX_VALUE 个元素，则返回Integer.MAX_VALUE 。
-2. boolean isEmpty();    当前列表不包含元素时返回 true 。
-3. boolean contains(Object o);    如果当前列表包含指定的元素则返回 true 。
-更准确的说，当且仅当列表中至少存在一个元素满足 (o == null ? e == null : o.equals(e) 时返回 true 。
-如果指定的元素类型不匹配，则可以抛出 ClassCastException ，但这是可选操作，也可以不抛出异常。
-如果指定的元素是空，且当前列表不允许空元素，则可以抛出 NullPointerException ，这也是可选操作。
-4. Iteratoriterator();    以正确的顺序返回在此列表中的元素上的迭代器。
-5. Object[] toArray();    以正确的顺序（从第一个元素到最后一个元素）返回一个包含此列表中所有元素的数组。</description>
+      <description>1. int size(); 2. boolean isEmpty(); 3. boolean contains(Object o); 4. Iteratoriterator(); 5. Object[] toArray(); 6. T[] toArray(T[] a); 7. boolean add(E e); 8. boolean remove(Object o); 9. boolean containsAll(Collection&amp;lt;?&amp;gt; c); 10. boolean addAll(Collection&amp;lt;? extends E&amp;gt; c); 11. boolean addAll(int index, Collection&amp;lt;? extends E&amp;gt; c); 12. boolean removeAll(Collection&amp;lt;?&amp;gt; c); 13. boolean retainAll(Collection&amp;lt;?&amp;gt; c); 14. default void replaceAll(UnaryOperatoroperator) 15. default void sort(Comparator&amp;lt;? super E&amp;gt; c) 16. void clear(); 17. boolean equals(Object o); 18.</description>
     </item>
     
     <item>
@@ -76,15 +45,11 @@ List接口提供了两种方法，可以有效地在列表中的任意点插入�
       <pubDate>Sun, 18 Jul 2021 18:23:38 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/ListIterator/</guid>
-      <description>列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n+1个可能的光标位置，如下面的插入符号（^）所示：
+      <description>1. boolean hasNext(); 2. E next(); 3. boolean hasPrevious(); 4. E previous(); 5. int nextIndex(); 6. int previousIndex(); 7. void remove(); 8. void set(E e); 9. void add(E e);    列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n+1个可能的光标位置，如下面的插入符号（^）所示：
  Element(0) Element(1) Element(2) ... Element(n-1) cursor positions: ^ ^ ^ ^ ^ 注意remove()和set(E e)方法不是根据光标位置定义的。它们被定义为对调用next()或previous()返回的最后一个元素进行操作。 该接口也是Java集合框架的成员接口。它继承于Iterator。
 注：下文中提到的“前”和“后”定义为：
  前：索引增大的方向 后：索引减小的方向  1. boolean hasNext();    当按照前进的方向遍历一个数组时，如果当前列表迭代器还有其他元素时返回true。（换句话说，如果next()方法能返回一个元素而非抛出一个异常，则返回true）
-2. E next();    返回列表中的下一个元素并向前移动光标位置。 可以重复调用此方法以遍历列表，也可以将其与previous()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有下一个元素时抛出NoSuchElementException。
-3. boolean hasPrevious();    当反向遍历列表时，如果列表迭代器还有其他元素，则返回true。（换句话说，当调用previous()时能返回一个元素而非抛出异常时，返回true）
-4. E previous();    返回列表中的前一个元素，并将光标位置向后移动。可以重复调用此方法以向后遍历列表，也可以将其与next()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有上一个元素时抛出NoSuchElementException。
-5. int nextIndex();    返回下一个元素的索引，也即后续对next()的调用返回的元素。 （如果列表迭代器位于列表的末尾，则返回列表大小。）
-6. int previousIndex();    返回上一个元素的索引，也即后续对previous()调用返回的元素。（如果列表迭代器位于列表的开头，则返回-1）</description>
+2. E next();    返回列表中的下一个元素并向前移动光标位置。 可以重复调用此方法以遍历列表，也可以将其与previous()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有下一个元素时抛出NoSuchElementException。</description>
     </item>
     
     <item>
@@ -93,15 +58,13 @@ List接口提供了两种方法，可以有效地在列表中的任意点插入�
       <pubDate>Sun, 18 Jul 2021 18:23:23 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/Iterator/</guid>
-      <description>集合上的迭代器。Iterator在Java集合框架中取代Enumeration。迭代器与枚举有两个不同之处：
+      <description>1. boolean hasNext() 2. E next() 3. default void remove() 4. default void forEachRemaining(Consumer&amp;lt;? super E&amp;gt; action)   集合上的迭代器。Iterator在Java集合框架中取代Enumeration。迭代器与枚举有两个不同之处：
  迭代器允许调用者在迭代期间以明确的语义从基础集合中删除元素。 方法名已得到改进。  该接口也是Java集合框架的成员。
 1. boolean hasNext()    如果当前迭代器包含更多元素，则返回true。（换句话说，如果调用next方法将返回一个元素而不是抛出异常，则返回true。）
 2. E next()    返回当前迭代器的下一个元素，如果不存在，则抛出NoSuchElementException。
 3. default void remove()    从基础集合中移除此迭代器返回的最后一个元素（可选操作）。每次调用next方法后只能调用此方法一次。如果在进行迭代时以任何方式修改基础集合，而不是调用此方法，则此时当前迭代器的行为将变得不确定。 可以看到该方法定义中有default关键字，其有一个默认实现，但是此默认执行仅抛出了一个UnsupportedOperationException，并无其他操作。 如果next方法还没有被调用，或者remove方法在最后一次调用next方法之后已经被调用过，则抛出IllegalStateException。
 源码如下：
-1 2 3  default void remove() { throw new UnsupportedOperationException(&amp;#34;remove&amp;#34;); }   4. default void forEachRemaining(Consumer&amp;lt;? super E&amp;gt; action)    对剩下的元素执行参数中指定的操作，直到所有元素（即剩下的所有元素）都被处理或者有异常抛出。如果指定了迭代的顺序，操作将按照迭代的顺序执行。 由action引发的异常会被转发给调用者。
-源码如下：
-1 2 3 4 5  default void forEachRemaining(Consumer&amp;lt;? super E&amp;gt; action) { Objects.</description>
+default void remove() { throw new UnsupportedOperationException(&amp;#34;remove&amp;#34;); } 4. default void forEachRemaining(Consumer&amp;lt;? super E&amp;gt; action)    对剩下的元素执行参数中指定的操作，直到所有元素（即剩下的所有元素）都被处理或者有异常抛出。如果指定了迭代的顺序，操作将按照迭代的顺序执行。 由action引发的异常会被转发给调用者。</description>
     </item>
     
     <item>
@@ -110,19 +73,7 @@ List接口提供了两种方法，可以有效地在列表中的任意点插入�
       <pubDate>Sun, 18 Jul 2021 18:22:49 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/</guid>
-      <description>此类提供了Collection接口的基本实现，以最大程度地减少实现此接口所需的工作。
-要实现一个不可修改的集合，编程者只需扩展此类并为iterator和size方法提供实现。 （iterator方法返回的迭代器必须实现hasNext和next。）
-要实现一个可修改的集合，编程者必须另外重写此类的add方法（否则将抛出UnsupportedOperationException），并且iterator方法返回的迭代器必须另外实现其remove方法。
-按Collection照接口规范中的建议，程序员通常应提供void（无参数）的Collection构造函数。
-此类中每个非抽象方法的文档都详细描述了其实现。如果正在实现的集合有更有效的实现，则可以重写这些方法中的每一个。
-该类是Java集合框架中的一员。
-1. protected AbstractCollection()    唯一的构造函数。 （用于子类构造函数的调用，通常是隐式的。）
-源码如下：
-1 2  protected AbstractCollection() { }   2. public abstract Iteratoriterator();    抽象方法，返回此集合中所包含元素的迭代器。
-3. public abstract int size();    抽象方法，返回此集合所包含的元素数量。
-4. public boolean isEmpty()    判断当前集合是否为空，底层是通过调用size()获取当前集合的元素数量，然后判断元素数量是否为0。
-源码如下：
-1 2 3  public boolean isEmpty() { return size() == 0; }   5. public boolean contains(Object o)    此实现对集合中的元素进行迭代，依次检查每个元素是否与参数中给定的元素相等。</description>
+      <description>1. protected AbstractCollection() 2. public abstract Iteratoriterator(); 3. public abstract int size(); 4. public boolean isEmpty() 5. public boolean contains(Object o) 6. public Object[] toArray() 7. public T[] toArray(T[] a) 8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 9. private static T[] finishToArray(T[] r, Iterator&amp;lt;?&amp;gt; it) 10. private static int hugeCapacity(int minCapacity) 11. public boolean add(E e) 12. public boolean remove(Object o) 13. public boolean containsAll(Collection&amp;lt;?&amp;gt; c) 14.</description>
     </item>
     
     <item>
@@ -131,30 +82,7 @@ List接口提供了两种方法，可以有效地在列表中的任意点插入�
       <pubDate>Sun, 18 Jul 2021 14:38:11 +0800</pubDate>
       
       <guid>https://hongmao.run/jdk8-src-note/java/util/Collection/</guid>
-      <description>Collection接口是集合层次结构中的根接口。集合表示一组对象，每个对象称为元素。有些集合允许重复元素，有些则不允许。有些集合是有序的，有些是无序的。
-JDK没有提供该接口的任何直接实现：它提供了更具体的子接口的实现，如Set和List。此接口通常用于传递集合并在需要最大通用性的地方操作它们。
-Bags或multiset（可能包含重复元素的无序集合）应该直接实现这个接口。
-所有通用的Collection实现类（通常通过其某个子接口间接实现Collection）应提供两个“标准”的构造函数：void（无参数）构造函数（该构造函数创建一个空集合），以及一个具有单个类型为Collection的参数的构造函数，该构造函数将创建一个新集合，新集合的元素与参数中指定的Collection的元素相同。实际上，后一个构造函数允许用户复制任何集合，从而生成所需类型的等效集合。但是无法强制执行此约定（因为接口不能包含构造函数），但是Java平台库中的所有通用Collection实现都遵循此约定。
-该接口中包含一些具有“破坏性”的方法，也就是这些方法在被调用时操作集合，但该集合并不支持该操作，此时这些方法将抛出UnsupportedOperationException。在这种情况下，如果调用对集合没有影响，则这些方法可能（但不是必需）抛出UnsupportedOperationException。例如，对不可修改的集合调用addAll方法可能会（但并不一定）引发异常（如果要添加的集合为空的话）。
-一些集合实现对它们可能包含的元素有所限制。例如，某些实现禁止空元素，而有些实现对其元素类型有限制。尝试添加不匹配的元素会引发未经检查的异常，通常为NullPointerException或ClassCastException。尝试查询集合中不匹配的元素是否存在可能会引发异常，或者可能仅返回false。一些实现将表现出前一种行为，而某些实现将表现出后者。更普遍的是，尝试对不匹配的元素进行操作，该操作的完成不会将不合格元素插入集合中，这可能会导致异常或成功，具体取决于实现方式。此类异常在此接口的规范中标记为“可选”。
-同步策略是由每个集合自己决定的。在没有强有力保证的实现中，调用另一个线程正在改变的集合上的任何方法都可能导致未知的行为；这包括直接调用，将集合传递给可能执行调用的方法，以及使用现有的迭代器检查集合。
-集合框架接口中的许多方法都是根据Object的equals方法定义的。例如，contains方法的规范中说：“当且仅当此集合包含至少一个元素e满足(o==null ? e==null : o.equals(e))时，返回true”。此规范不应解释为暗示使用非空参数o调用Collection.contains时将导致对任何元素e都会调用o.equals(e)。各实现可以自由地进行优化，从而避免equals调用，例如，首先比较两个元素的哈希码。（Object的hashCode()规范保证哈希码不相等的两个对象不能相等。）更普遍的说，只要实现者认为合适，各种集合框架接口的实现都可以自由利用基础Object方法的指定行为。
-一些对集合执行递归遍历的操作可能会失败，但对于集合直接或间接包含其自身的自引用实例除外，包括clone()、equals()、hashCode()、toString()方法。实现类可以选择性地处理自引用场景，但是大多数当前的实现都没有这样做。
-该接口是Java集合框架的成员接口。
-默认的方法实现（继承的或其他）不应用任何同步协议。如果一个集合实现有一个特定的同步协议，那么它必须覆盖默认实现来应用该协议。
-1. int size()    返回当前集合内元素的数量。如果数量超过Integer.MAX_VALUE则返回Integer.MAX_VALUE。
-2. boolean isEmpty()    如果当前集合内没有元素，则返回true。
-3. boolean contains(Object o)    当集合包含指定的元素时返回true。更准确的说，当且仅当集合中至少存在一个元素e能够满足(o==null ? e==null : o.equals(e))时返回true。
-如果指定元素的类型与此集合不兼容，则抛出ClassCastException。
-如果指定的元素o为空，则抛出NullPointerException。
-4. Iteratoriterator()    返回此集合中元素的迭代器。没有关于元素返回顺序的保证（除非此集合是某个提供保证的类的实例）。
-5. Object[] toArray()    返回一个包含此集合中所有元素的数组。如果此集合保证其迭代器返回其元素的顺序，则此方法必须按相同的顺序返回元素。
-返回的数组将是“安全的”，因为此集合不维护对其的引用。 （换句话说，即使此集合是基于数组的，此方法也必须分配一个新数组）。因此，调用者可以自由修改返回的数组。
-此方法充当基于数组的api和基于集合的api之间的桥梁。
-6. T[] toArray(T[] a)    返回一个数组，该数组包含此集合中的所有元素。返回数组的运行时类型是指定数组的运行时类型。如果集合符合指定的数组，则在其中返回集合。否则，将使用指定数组的运行时类型和此集合的大小分配新数组。
-如果指定的数组能够容纳集合的所有元素并有剩余空间（即数组中的容量大于集合），则紧接集合结束后的数组中的元素设置为null。（如果调用者知道列表不包含任何null元素，则这对于确定列表的长度很有用。）
-如果此集合保证其迭代器返回元素的顺序，则此方法必须按相同的顺序返回元素。
-与toArray()方法类似，此方法充当基于数组的API和基于集合的API之间的桥梁。此外，此方法允许对输出数组的运行时类型进行精确控制，并且在某些情况下可以用来节省分配成本。</description>
+      <description>1. int size() 2. boolean isEmpty() 3. boolean contains(Object o) 4. Iteratoriterator() 5. Object[] toArray() 6. T[] toArray(T[] a) 7. boolean add(E e) 8. boolean remove(Object o) 9. boolean containsAll(Collection&amp;lt;?&amp;gt; c) 10. boolean addAll(Collection&amp;lt;? extends E&amp;gt; c) 11. boolean removeAll(Collection&amp;lt;?&amp;gt; c) 12. default boolean removeIf(Predicate&amp;lt;? super E&amp;gt; filter) 13. boolean retainAll(Collection&amp;lt;?&amp;gt; c) 14. void clear() 15. boolean equals(Object o) 16. int hashCode() 17. default Spliteratorspliterator() 18. default Streamstream() 19.</description>
     </item>
     
   </channel>

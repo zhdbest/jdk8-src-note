@@ -10,19 +10,7 @@
 
 
 
-    <meta name="description" content="此类提供了Collection接口的基本实现，以最大程度地减少实现此接口所需的工作。
-要实现一个不可修改的集合，编程者只需扩展此类并为iterator和size方法提供实现。 （iterator方法返回的迭代器必须实现hasNext和next。）
-要实现一个可修改的集合，编程者必须另外重写此类的add方法（否则将抛出UnsupportedOperationException），并且iterator方法返回的迭代器必须另外实现其remove方法。
-按Collection照接口规范中的建议，程序员通常应提供void（无参数）的Collection构造函数。
-此类中每个非抽象方法的文档都详细描述了其实现。如果正在实现的集合有更有效的实现，则可以重写这些方法中的每一个。
-该类是Java集合框架中的一员。
-1. protected AbstractCollection()    唯一的构造函数。 （用于子类构造函数的调用，通常是隐式的。）
-源码如下：
-1 2  protected AbstractCollection() { }   2. public abstract Iteratoriterator();    抽象方法，返回此集合中所包含元素的迭代器。
-3. public abstract int size();    抽象方法，返回此集合所包含的元素数量。
-4. public boolean isEmpty()    判断当前集合是否为空，底层是通过调用size()获取当前集合的元素数量，然后判断元素数量是否为0。
-源码如下：
-1 2 3  public boolean isEmpty() { return size() == 0; }   5. public boolean contains(Object o)    此实现对集合中的元素进行迭代，依次检查每个元素是否与参数中给定的元素相等。">
+    <meta name="description" content="1. protected AbstractCollection() 2. public abstract Iteratoriterator(); 3. public abstract int size(); 4. public boolean isEmpty() 5. public boolean contains(Object o) 6. public Object[] toArray() 7. public T[] toArray(T[] a) 8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 9. private static T[] finishToArray(T[] r, Iterator&lt;?&gt; it) 10. private static int hugeCapacity(int minCapacity) 11. public boolean add(E e) 12. public boolean remove(Object o) 13. public boolean containsAll(Collection&lt;?&gt; c) 14.">
 
 
 
@@ -535,7 +523,39 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>AbstractCollection</h1>
-        <p><img src="https://img.hongmao.run/blog/2021/07/AbstractCollection.png" alt=""  /></p>
+        
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-protected-abstractcollection">1. protected AbstractCollection()</a></li>
+    <li><a href="#2-public-abstract-iteratore-iterator">2. public abstract Iterator<!-- raw HTML omitted --> iterator();</a></li>
+    <li><a href="#3-public-abstract-int-size">3. public abstract int size();</a></li>
+    <li><a href="#4-public-boolean-isempty">4. public boolean isEmpty()</a></li>
+    <li><a href="#5-public-boolean-containsobject-o">5. public boolean contains(Object o)</a></li>
+    <li><a href="#6-public-object-toarray">6. public Object[] toArray()</a></li>
+    <li><a href="#7-public-t-t-toarrayt-a">7. public <!-- raw HTML omitted --> T[] toArray(T[] a)</a></li>
+    <li><a href="#8-private-static-final-int-max_array_size--integermax_value---8">8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;</a></li>
+    <li><a href="#9-private-static-t-t-finishtoarrayt-r-iterator-it">9. private static <!-- raw HTML omitted --> T[] finishToArray(T[] r, Iterator&lt;?&gt; it)</a></li>
+    <li><a href="#10-private-static-int-hugecapacityint-mincapacity">10. private static int hugeCapacity(int minCapacity)</a></li>
+    <li><a href="#11-public-boolean-adde-e">11. public boolean add(E e)</a></li>
+    <li><a href="#12-public-boolean-removeobject-o">12. public boolean remove(Object o)</a></li>
+    <li><a href="#13-public-boolean-containsallcollection-c">13. public boolean containsAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#14-public-boolean-addallcollection-extends-e-c">14. public boolean addAll(Collection&lt;? extends E&gt; c)</a></li>
+    <li><a href="#15-public-boolean-removeallcollection-c">15. public boolean removeAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#16-public-boolean-retainallcollection-c">16. public boolean retainAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#17-public-void-clear">17. public void clear()</a></li>
+    <li><a href="#18-public-string-tostring">18. public String toString()</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/07/AbstractCollection.png' width='30%' alt=''>
+</div>
+
+
 <p>此类提供了<code>Collection</code>接口的基本实现，以最大程度地减少实现此接口所需的工作。</p>
 <p>要实现一个不可修改的集合，编程者只需扩展此类并为<code>iterator</code>和<code>size</code>方法提供实现。 （<code>iterator</code>方法返回的迭代器必须实现<code>hasNext</code>和<code>next</code>。）</p>
 <p>要实现一个可修改的集合，编程者必须另外重写此类的<code>add</code>方法（否则将抛出<code>UnsupportedOperationException</code>），并且<code>iterator</code>方法返回的迭代器必须另外实现其<code>remove</code>方法。</p>
@@ -551,17 +571,9 @@
     </h1>
 </div><p>唯一的构造函数。 （用于子类构造函数的调用，通常是隐式的。）</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#000">AbstractCollection</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#000">AbstractCollection</span><span style="color:#000">()</span> <span style="color:#000">{</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="2-public-abstract-iteratore-iterator">
         2. public abstract Iterator<!-- raw HTML omitted --> iterator();
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#2-public-abstract-iteratore-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. public abstract Iterator iterator();" href="#2-public-abstract-iteratore-iterator">
@@ -586,19 +598,10 @@
     </h1>
 </div><p>判断当前集合是否为空，底层是通过调用<code>size()</code>获取当前集合的元素数量，然后判断元素数量是否为0。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">isEmpty</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">isEmpty</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">size</span><span style="color:#000">()</span> <span style="color:#000">==</span> <span style="color:#000">0</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="5-public-boolean-containsobject-o">
         5. public boolean contains(Object o)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#5-public-boolean-containsobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 5. public boolean contains(Object o)" href="#5-public-boolean-containsobject-o">
@@ -608,24 +611,7 @@
 </div><p>此实现对集合中的元素进行迭代，依次检查每个元素是否与参数中给定的元素相等。</p>
 <p>使用该集合的迭代器遍历当前集合，如果参数中给定的参数<code>o</code>为<code>null</code>，则判断当前集合中是否存在为<code>null</code>的元素。如果参数中给定的参数不为<code>null</code>，则通过<code>equals</code>判断当前集合中是否存在和给定元素<code>o</code>相等的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">contains</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">contains</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">o</span><span style="color:#000">==</span><span style="color:#a90d91">null</span><span style="color:#000">)</span> <span style="color:#000">{</span>
         <span style="color:#a90d91">while</span> <span style="color:#000">(</span><span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">())</span>
@@ -638,9 +624,7 @@
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="6-public-object-toarray">
         6. public Object[] toArray()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#6-public-object-toarray" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 6. public Object[] toArray()" href="#6-public-object-toarray">
@@ -649,41 +633,12 @@
     </h1>
 </div><p>此实现返回一个数组，该数组包含所有通过该集合的迭代器返回的元素，元素以相同的顺序在数组连续存在，从索引<code>0</code>开始。返回数组的长度等于迭代器返回的元素数（即使此集合的大小在迭代过程中发生了变化，如果该集合允许在迭代过程中进行并发修改，就可能会发生这种情况）。<code>size</code>方法仅作为优化提示被调用，即使迭代器返回不同数量的元素，也将返回正确的结果。</p>
 <p>该方法等同于：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">ArrayList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;(</span><span style="color:#000">size</span><span style="color:#000">());</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">ArrayList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;(</span><span style="color:#000">size</span><span style="color:#000">());</span>
 <span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span> <span style="color:#000">:</span> <span style="color:#a90d91">this</span><span style="color:#000">)</span>
     <span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">add</span><span style="color:#000">(</span><span style="color:#000">e</span><span style="color:#000">);</span>
 <span style="color:#a90d91">return</span> <span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">toArray</span><span style="color:#000">();</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Object</span><span style="color:#000">[]</span> <span style="color:#000">toArray</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+</code></pre></div><p>源码如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Object</span><span style="color:#000">[]</span> <span style="color:#000">toArray</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// Estimate size of array; be prepared to see more or fewer elements
 </span><span style="color:#177500"></span>    <span style="color:#177500">// 声明一个数组，大小为当前集合的大小（实际元素可能会多也可能会少）
 </span><span style="color:#177500"></span>		<span style="color:#000">Object</span><span style="color:#000">[]</span> <span style="color:#000">r</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">Object</span><span style="color:#000">[</span><span style="color:#000">size</span><span style="color:#000">()];</span>
@@ -698,9 +653,7 @@
 		<span style="color:#177500">// 如果遍历完成，但迭代器仍未至末尾，此时调用finishToArray方法重新分配数组并完成剩余元素的填充
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">()</span> <span style="color:#000">?</span> <span style="color:#000">finishToArray</span><span style="color:#000">(</span><span style="color:#000">r</span><span style="color:#000">,</span> <span style="color:#000">it</span><span style="color:#000">)</span> <span style="color:#000">:</span> <span style="color:#000">r</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="7-public-t-t-toarrayt-a">
         7. public <!-- raw HTML omitted --> T[] toArray(T[] a)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#7-public-t-t-toarrayt-a" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. public  T[] toArray(T[] a)" href="#7-public-t-t-toarrayt-a">
@@ -709,65 +662,12 @@
     </h1>
 </div><p>此实现返回一个数组，此数组包含所有通过该集合的迭代器返回的元素，元素以相同的顺序在数组中连续存在，从索引<code>0</code>开始。如果迭代器返回的元素数量太多而无法容纳到指定的数组中，那么元素也会以新分配数组的形式返回，其长度等于迭代器返回的元素数量，即使此集合的大小发生变化（如果在迭代过程中集合允许并发修改，则可能会发生这种情况）。<code>size</code>方法仅作为优化提示被调用，即使迭代器返回不同数量的元素，也将返回正确的结果。</p>
 <p>该方法等同于：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">ArrayList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;(</span><span style="color:#000">size</span><span style="color:#000">());</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">ArrayList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;(</span><span style="color:#000">size</span><span style="color:#000">());</span>
 <span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span> <span style="color:#000">:</span> <span style="color:#a90d91">this</span><span style="color:#000">)</span>
     <span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">add</span><span style="color:#000">(</span><span style="color:#000">e</span><span style="color:#000">);</span>
 <span style="color:#a90d91">return</span> <span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">toArray</span><span style="color:#000">();</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@SuppressWarnings</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;unchecked&#34;</span><span style="color:#000">)</span>
+</code></pre></div><p>源码如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@SuppressWarnings</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;unchecked&#34;</span><span style="color:#000">)</span>
 <span style="color:#a90d91">public</span> <span style="color:#000">&lt;</span><span style="color:#000">T</span><span style="color:#000">&gt;</span> <span style="color:#000">T</span><span style="color:#000">[]</span> <span style="color:#000">toArray</span><span style="color:#000">(</span><span style="color:#000">T</span><span style="color:#000">[]</span> <span style="color:#000">a</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// Estimate size of array; be prepared to see more or fewer elements
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">int</span> <span style="color:#000">size</span> <span style="color:#000">=</span> <span style="color:#000">size</span><span style="color:#000">();</span>
@@ -806,9 +706,7 @@
 </span><span style="color:#177500"></span>		<span style="color:#177500">// 如果遍历完成，发现仍未至迭代器的末尾，则调用finishToArray重新分配数组并完成剩余元素的填充
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">()</span> <span style="color:#000">?</span> <span style="color:#000">finishToArray</span><span style="color:#000">(</span><span style="color:#000">r</span><span style="color:#000">,</span> <span style="color:#000">it</span><span style="color:#000">)</span> <span style="color:#000">:</span> <span style="color:#000">r</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="8-private-static-final-int-max_array_size--integermax_value---8">
         8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#8-private-static-final-int-max_array_size--integermax_value---8" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;" href="#8-private-static-final-int-max_array_size--integermax_value---8">
@@ -825,31 +723,7 @@
     </h1>
 </div><p>当迭代器返回的元素比预期的多时，在<code>toArray</code>中重新分配正在使用的数组，并完成从迭代器中填充它的操作。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@SuppressWarnings</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;unchecked&#34;</span><span style="color:#000">)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@SuppressWarnings</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;unchecked&#34;</span><span style="color:#000">)</span>
 <span style="color:#a90d91">private</span> <span style="color:#a90d91">static</span> <span style="color:#000">&lt;</span><span style="color:#000">T</span><span style="color:#000">&gt;</span> <span style="color:#000">T</span><span style="color:#000">[]</span> <span style="color:#000">finishToArray</span><span style="color:#000">(</span><span style="color:#000">T</span><span style="color:#000">[]</span> <span style="color:#000">r</span><span style="color:#000">,</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">it</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">int</span> <span style="color:#000">i</span> <span style="color:#000">=</span> <span style="color:#000">r</span><span style="color:#000">.</span><span style="color:#836c28">length</span><span style="color:#000">;</span>
     <span style="color:#a90d91">while</span> <span style="color:#000">(</span><span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">())</span> <span style="color:#000">{</span>
@@ -869,9 +743,7 @@
 </span><span style="color:#177500"></span>		<span style="color:#177500">// 如果重新分配后数组长度过长，则进行数组复制以实现trim效果
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">(</span><span style="color:#000">i</span> <span style="color:#000">==</span> <span style="color:#000">r</span><span style="color:#000">.</span><span style="color:#836c28">length</span><span style="color:#000">)</span> <span style="color:#000">?</span> <span style="color:#000">r</span> <span style="color:#000">:</span> <span style="color:#000">Arrays</span><span style="color:#000">.</span><span style="color:#836c28">copyOf</span><span style="color:#000">(</span><span style="color:#000">r</span><span style="color:#000">,</span> <span style="color:#000">i</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="10-private-static-int-hugecapacityint-mincapacity">
         10. private static int hugeCapacity(int minCapacity)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#10-private-static-int-hugecapacityint-mincapacity" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 10. private static int hugeCapacity(int minCapacity)" href="#10-private-static-int-hugecapacityint-mincapacity">
@@ -880,22 +752,7 @@
     </h1>
 </div><p>获取数组的最大容量。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">static</span> <span style="color:#a90d91">int</span> <span style="color:#000">hugeCapacity</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">minCapacity</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">static</span> <span style="color:#a90d91">int</span> <span style="color:#000">hugeCapacity</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">minCapacity</span><span style="color:#000">)</span> <span style="color:#000">{</span>
 		<span style="color:#177500">// 负数是不可以的，直接抛出异常
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">minCapacity</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span><span style="color:#000">)</span> <span style="color:#177500">// overflow
 </span><span style="color:#177500"></span>        <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">OutOfMemoryError</span>
@@ -906,9 +763,7 @@
         <span style="color:#000">Integer</span><span style="color:#000">.</span><span style="color:#836c28">MAX_VALUE</span> <span style="color:#000">:</span>
         <span style="color:#000">MAX_ARRAY_SIZE</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="11-public-boolean-adde-e">
         11. public boolean add(E e)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#11-public-boolean-adde-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 11. public boolean add(E e)" href="#11-public-boolean-adde-e">
@@ -917,19 +772,10 @@
     </h1>
 </div><p>该方法的默认实现为抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">UnsupportedOperationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="12-public-boolean-removeobject-o">
         12. public boolean remove(Object o)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#12-public-boolean-removeobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 12. public boolean remove(Object o)" href="#12-public-boolean-removeobject-o">
@@ -939,33 +785,7 @@
 </div><p>此实现遍历集合以查找指定的元素。如果找到该元素，则使用迭代器的<code>remove</code>方法从集合中删除该元素。</p>
 <p>请注意，如果此集合的<code>iterator</code>方法返回的迭代器未实现<code>remove</code>方法并且该集合包含指定的对象，则此实现将引发<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
 		<span style="color:#177500">// 当指定元素为null时，遍历集合，对每个元素执行 “== null”的判断
 </span><span style="color:#177500"></span>		<span style="color:#177500">// 否则，使用equals方法判断，找到对应对象后，使用迭代器的remove方法删除
@@ -987,9 +807,7 @@
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="13-public-boolean-containsallcollection-c">
         13. public boolean containsAll(Collection&lt;?&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#13-public-boolean-containsallcollection-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 13. public boolean containsAll(Collection&lt;?&gt; c)" href="#13-public-boolean-containsallcollection-c">
@@ -998,19 +816,7 @@
     </h1>
 </div><p>此实现将遍历给定的集合，依次检查每个元素以查看其是否包含在此集合中。如果所有元素都包含，则返回<code>true</code>，否则返回<code>false</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">containsAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">containsAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
 		<span style="color:#177500">// 遍历指定集合c，然后调用contains方法判断每一个迭代到的元素是否存在于当前集合中
 </span><span style="color:#177500"></span>		<span style="color:#177500">// 发现有一个不包含则直接返回false
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">e</span> <span style="color:#000">:</span> <span style="color:#000">c</span><span style="color:#000">)</span>
@@ -1018,9 +824,7 @@
             <span style="color:#a90d91">return</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">true</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="14-public-boolean-addallcollection-extends-e-c">
         14. public boolean addAll(Collection&lt;? extends E&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#14-public-boolean-addallcollection-extends-e-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14. public boolean addAll(Collection&lt;? extends E&gt; c)" href="#14-public-boolean-addallcollection-extends-e-c">
@@ -1030,20 +834,7 @@
 </div><p>此实现遍历给定的集合，并将迭代器返回的每个对象依次添加到此集合。</p>
 <p>请注意，除非重写<code>add</code>（假定指定的集合为非空），否则此实现将抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">boolean</span> <span style="color:#000">modified</span> <span style="color:#000">=</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
 		<span style="color:#177500">// 遍历指定的集合c
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span> <span style="color:#000">:</span> <span style="color:#000">c</span><span style="color:#000">)</span>
@@ -1052,9 +843,7 @@
             <span style="color:#000">modified</span> <span style="color:#000">=</span> <span style="color:#a90d91">true</span><span style="color:#000">;</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">modified</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="15-public-boolean-removeallcollection-c">
         15. public boolean removeAll(Collection&lt;?&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#15-public-boolean-removeallcollection-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15. public boolean removeAll(Collection&lt;?&gt; c)" href="#15-public-boolean-removeallcollection-c">
@@ -1064,26 +853,7 @@
 </div><p>此实现遍历当前集合，依次检查迭代器返回的每个元素以查看其是否包含在指定的集合中。如果包含，则使用迭代器的<code>remove</code>方法将其从此集合中删除。</p>
 <p>请注意，如果<code>iterator</code>方法返回的迭代器未实现<code>remove</code>方法并且此集合的确包含给定集合的一个或多个元素，则此实现将抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">removeAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">removeAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Objects</span><span style="color:#000">.</span><span style="color:#836c28">requireNonNull</span><span style="color:#000">(</span><span style="color:#000">c</span><span style="color:#000">);</span>
     <span style="color:#a90d91">boolean</span> <span style="color:#000">modified</span> <span style="color:#000">=</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
@@ -1098,9 +868,7 @@
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">modified</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="16-public-boolean-retainallcollection-c">
         16. public boolean retainAll(Collection&lt;?&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#16-public-boolean-retainallcollection-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 16. public boolean retainAll(Collection&lt;?&gt; c)" href="#16-public-boolean-retainallcollection-c">
@@ -1111,25 +879,7 @@
 <p>请注意，如果<code>iterator</code>方法返回的迭代器未实现<code>remove</code>方法并且此集合的确包含给定集合中一个或多个不存在的元素，则此实现将抛出<code>UnsupportedOperationException</code>。</p>
 <p>总体来说，该方法执行后，当前集合中仅剩余当前集合和指定集合中均存在的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">retainAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">retainAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Objects</span><span style="color:#000">.</span><span style="color:#836c28">requireNonNull</span><span style="color:#000">(</span><span style="color:#000">c</span><span style="color:#000">);</span>
     <span style="color:#a90d91">boolean</span> <span style="color:#000">modified</span> <span style="color:#000">=</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
@@ -1143,9 +893,7 @@
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">modified</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="17-public-void-clear">
         17. public void clear()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#17-public-void-clear" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 17. public void clear()" href="#17-public-void-clear">
@@ -1155,19 +903,7 @@
 </div><p>此实现遍历当前集合，并使用<code>Iterator.remove</code>操作删除每个元素。大多数实现可能会选择重写此方法以提高效率。</p>
 <p>请注意，如果此集合的<code>iterator</code>方法返回的迭代器未实现<code>remove</code>方法并且该集合非空，则此方法将抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">clear</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">clear</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
 		<span style="color:#177500">// 遍历当前集合，使用迭代器删除每个元素
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">while</span> <span style="color:#000">(</span><span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">())</span> <span style="color:#000">{</span>
@@ -1175,9 +911,7 @@
         <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">remove</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="18-public-string-tostring">
         18. public String toString()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#18-public-string-tostring" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 18. public String toString()" href="#18-public-string-tostring">
@@ -1186,29 +920,7 @@
     </h1>
 </div><p>返回此集合的字符串表示形式。字符串表示形式包括一个集合元素的列表，这些元素按其迭代器返回的顺序排列，并括在方括号（<code>[]</code>）中。相邻元素由字符<code>,</code>（逗号和空格）分隔。元素通过<code>String</code>的<code>valueOf(Object obj)</code>方法转换为字符串。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">String</span> <span style="color:#000">toString</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">String</span> <span style="color:#000">toString</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
 		<span style="color:#177500">// 如果当前集合为空，则返回[]
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">if</span> <span style="color:#000">(!</span> <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">())</span>
@@ -1226,9 +938,7 @@
         <span style="color:#000">sb</span><span style="color:#000">.</span><span style="color:#836c28">append</span><span style="color:#000">(</span><span style="color:#2300ce">&#39;,&#39;</span><span style="color:#000">).</span><span style="color:#836c28">append</span><span style="color:#000">(</span><span style="color:#2300ce">&#39; &#39;</span><span style="color:#000">);</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 
     </article>
 

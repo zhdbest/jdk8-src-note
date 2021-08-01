@@ -10,15 +10,11 @@
 
 
 
-    <meta name="description" content="列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n&#43;1个可能的光标位置，如下面的插入符号（^）所示：
+    <meta name="description" content="1. boolean hasNext(); 2. E next(); 3. boolean hasPrevious(); 4. E previous(); 5. int nextIndex(); 6. int previousIndex(); 7. void remove(); 8. void set(E e); 9. void add(E e);    列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n&#43;1个可能的光标位置，如下面的插入符号（^）所示：
  Element(0) Element(1) Element(2) ... Element(n-1) cursor positions: ^ ^ ^ ^ ^ 注意remove()和set(E e)方法不是根据光标位置定义的。它们被定义为对调用next()或previous()返回的最后一个元素进行操作。 该接口也是Java集合框架的成员接口。它继承于Iterator。
 注：下文中提到的“前”和“后”定义为：
  前：索引增大的方向 后：索引减小的方向  1. boolean hasNext();    当按照前进的方向遍历一个数组时，如果当前列表迭代器还有其他元素时返回true。（换句话说，如果next()方法能返回一个元素而非抛出一个异常，则返回true）
-2. E next();    返回列表中的下一个元素并向前移动光标位置。 可以重复调用此方法以遍历列表，也可以将其与previous()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有下一个元素时抛出NoSuchElementException。
-3. boolean hasPrevious();    当反向遍历列表时，如果列表迭代器还有其他元素，则返回true。（换句话说，当调用previous()时能返回一个元素而非抛出异常时，返回true）
-4. E previous();    返回列表中的前一个元素，并将光标位置向后移动。可以重复调用此方法以向后遍历列表，也可以将其与next()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有上一个元素时抛出NoSuchElementException。
-5. int nextIndex();    返回下一个元素的索引，也即后续对next()的调用返回的元素。 （如果列表迭代器位于列表的末尾，则返回列表大小。）
-6. int previousIndex();    返回上一个元素的索引，也即后续对previous()调用返回的元素。（如果列表迭代器位于列表的开头，则返回-1）">
+2. E next();    返回列表中的下一个元素并向前移动光标位置。 可以重复调用此方法以遍历列表，也可以将其与previous()混合调用。 （请注意，交替调用next()和previous()将重复返回相同的元素。） 当没有下一个元素时抛出NoSuchElementException。">
 
 
 
@@ -531,7 +527,30 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>ListIterator</h1>
-        <p><img src="https://img.hongmao.run/blog/2021/07/ListIterator.png" alt=""  /></p>
+        
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-boolean-hasnext">1. boolean hasNext();</a></li>
+    <li><a href="#2-e-next">2. E next();</a></li>
+    <li><a href="#3-boolean-hasprevious">3. boolean hasPrevious();</a></li>
+    <li><a href="#4-e-previous">4. E previous();</a></li>
+    <li><a href="#5-int-nextindex">5. int nextIndex();</a></li>
+    <li><a href="#6-int-previousindex">6. int previousIndex();</a></li>
+    <li><a href="#7-void-remove">7. void remove();</a></li>
+    <li><a href="#8-void-sete-e">8. void set(E e);</a></li>
+    <li><a href="#9-void-adde-e">9. void add(E e);</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/07/ListIterator.png' width='30%' alt=''>
+</div>
+
+
 <p>列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。<code>ListIterator</code>不持有当前元素，它的游标位置始终位于<code>previous()</code>返回的元素与<code>next()</code>返回的元素之间。 长度为<code>n</code>列表的迭代器具有<code>n+1</code>个可能的光标位置，如下面的插入符号（<code>^</code>）所示：</p>
 <pre><code>                     Element(0)   Element(1)   Element(2)   ... Element(n-1)
 cursor positions:  ^            ^            ^            ^                  ^

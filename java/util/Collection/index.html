@@ -10,30 +10,7 @@
 
 
 
-    <meta name="description" content="Collection接口是集合层次结构中的根接口。集合表示一组对象，每个对象称为元素。有些集合允许重复元素，有些则不允许。有些集合是有序的，有些是无序的。
-JDK没有提供该接口的任何直接实现：它提供了更具体的子接口的实现，如Set和List。此接口通常用于传递集合并在需要最大通用性的地方操作它们。
-Bags或multiset（可能包含重复元素的无序集合）应该直接实现这个接口。
-所有通用的Collection实现类（通常通过其某个子接口间接实现Collection）应提供两个“标准”的构造函数：void（无参数）构造函数（该构造函数创建一个空集合），以及一个具有单个类型为Collection的参数的构造函数，该构造函数将创建一个新集合，新集合的元素与参数中指定的Collection的元素相同。实际上，后一个构造函数允许用户复制任何集合，从而生成所需类型的等效集合。但是无法强制执行此约定（因为接口不能包含构造函数），但是Java平台库中的所有通用Collection实现都遵循此约定。
-该接口中包含一些具有“破坏性”的方法，也就是这些方法在被调用时操作集合，但该集合并不支持该操作，此时这些方法将抛出UnsupportedOperationException。在这种情况下，如果调用对集合没有影响，则这些方法可能（但不是必需）抛出UnsupportedOperationException。例如，对不可修改的集合调用addAll方法可能会（但并不一定）引发异常（如果要添加的集合为空的话）。
-一些集合实现对它们可能包含的元素有所限制。例如，某些实现禁止空元素，而有些实现对其元素类型有限制。尝试添加不匹配的元素会引发未经检查的异常，通常为NullPointerException或ClassCastException。尝试查询集合中不匹配的元素是否存在可能会引发异常，或者可能仅返回false。一些实现将表现出前一种行为，而某些实现将表现出后者。更普遍的是，尝试对不匹配的元素进行操作，该操作的完成不会将不合格元素插入集合中，这可能会导致异常或成功，具体取决于实现方式。此类异常在此接口的规范中标记为“可选”。
-同步策略是由每个集合自己决定的。在没有强有力保证的实现中，调用另一个线程正在改变的集合上的任何方法都可能导致未知的行为；这包括直接调用，将集合传递给可能执行调用的方法，以及使用现有的迭代器检查集合。
-集合框架接口中的许多方法都是根据Object的equals方法定义的。例如，contains方法的规范中说：“当且仅当此集合包含至少一个元素e满足(o==null ? e==null : o.equals(e))时，返回true”。此规范不应解释为暗示使用非空参数o调用Collection.contains时将导致对任何元素e都会调用o.equals(e)。各实现可以自由地进行优化，从而避免equals调用，例如，首先比较两个元素的哈希码。（Object的hashCode()规范保证哈希码不相等的两个对象不能相等。）更普遍的说，只要实现者认为合适，各种集合框架接口的实现都可以自由利用基础Object方法的指定行为。
-一些对集合执行递归遍历的操作可能会失败，但对于集合直接或间接包含其自身的自引用实例除外，包括clone()、equals()、hashCode()、toString()方法。实现类可以选择性地处理自引用场景，但是大多数当前的实现都没有这样做。
-该接口是Java集合框架的成员接口。
-默认的方法实现（继承的或其他）不应用任何同步协议。如果一个集合实现有一个特定的同步协议，那么它必须覆盖默认实现来应用该协议。
-1. int size()    返回当前集合内元素的数量。如果数量超过Integer.MAX_VALUE则返回Integer.MAX_VALUE。
-2. boolean isEmpty()    如果当前集合内没有元素，则返回true。
-3. boolean contains(Object o)    当集合包含指定的元素时返回true。更准确的说，当且仅当集合中至少存在一个元素e能够满足(o==null ? e==null : o.equals(e))时返回true。
-如果指定元素的类型与此集合不兼容，则抛出ClassCastException。
-如果指定的元素o为空，则抛出NullPointerException。
-4. Iteratoriterator()    返回此集合中元素的迭代器。没有关于元素返回顺序的保证（除非此集合是某个提供保证的类的实例）。
-5. Object[] toArray()    返回一个包含此集合中所有元素的数组。如果此集合保证其迭代器返回其元素的顺序，则此方法必须按相同的顺序返回元素。
-返回的数组将是“安全的”，因为此集合不维护对其的引用。 （换句话说，即使此集合是基于数组的，此方法也必须分配一个新数组）。因此，调用者可以自由修改返回的数组。
-此方法充当基于数组的api和基于集合的api之间的桥梁。
-6. T[] toArray(T[] a)    返回一个数组，该数组包含此集合中的所有元素。返回数组的运行时类型是指定数组的运行时类型。如果集合符合指定的数组，则在其中返回集合。否则，将使用指定数组的运行时类型和此集合的大小分配新数组。
-如果指定的数组能够容纳集合的所有元素并有剩余空间（即数组中的容量大于集合），则紧接集合结束后的数组中的元素设置为null。（如果调用者知道列表不包含任何null元素，则这对于确定列表的长度很有用。）
-如果此集合保证其迭代器返回元素的顺序，则此方法必须按相同的顺序返回元素。
-与toArray()方法类似，此方法充当基于数组的API和基于集合的API之间的桥梁。此外，此方法允许对输出数组的运行时类型进行精确控制，并且在某些情况下可以用来节省分配成本。">
+    <meta name="description" content="1. int size() 2. boolean isEmpty() 3. boolean contains(Object o) 4. Iteratoriterator() 5. Object[] toArray() 6. T[] toArray(T[] a) 7. boolean add(E e) 8. boolean remove(Object o) 9. boolean containsAll(Collection&lt;?&gt; c) 10. boolean addAll(Collection&lt;? extends E&gt; c) 11. boolean removeAll(Collection&lt;?&gt; c) 12. default boolean removeIf(Predicate&lt;? super E&gt; filter) 13. boolean retainAll(Collection&lt;?&gt; c) 14. void clear() 15. boolean equals(Object o) 16. int hashCode() 17. default Spliteratorspliterator() 18. default Streamstream() 19.">
 
 
 
@@ -546,7 +523,40 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Collection</h1>
-        <p><img src="https://img.hongmao.run/blog/Collection.png" alt=""  /></p>
+        
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-int-size">1. int size()</a></li>
+    <li><a href="#2-boolean-isempty">2. boolean isEmpty()</a></li>
+    <li><a href="#3-boolean-containsobject-o">3. boolean contains(Object o)</a></li>
+    <li><a href="#4-iteratore-iterator">4. Iterator<!-- raw HTML omitted --> iterator()</a></li>
+    <li><a href="#5-object-toarray">5. Object[] toArray()</a></li>
+    <li><a href="#6-t-t-toarrayt-a">6. <!-- raw HTML omitted --> T[] toArray(T[] a)</a></li>
+    <li><a href="#7-boolean-adde-e">7. boolean add(E e)</a></li>
+    <li><a href="#8-boolean-removeobject-o">8. boolean remove(Object o)</a></li>
+    <li><a href="#9-boolean-containsallcollection-c">9. boolean containsAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#10-boolean-addallcollection-extends-e-c">10. boolean addAll(Collection&lt;? extends E&gt; c)</a></li>
+    <li><a href="#11-boolean-removeallcollection-c">11. boolean removeAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#12-default-boolean-removeifpredicate-super-e-filter">12. default boolean removeIf(Predicate&lt;? super E&gt; filter)</a></li>
+    <li><a href="#13-boolean-retainallcollection-c">13. boolean retainAll(Collection&lt;?&gt; c)</a></li>
+    <li><a href="#14-void-clear">14. void clear()</a></li>
+    <li><a href="#15-boolean-equalsobject-o">15. boolean equals(Object o)</a></li>
+    <li><a href="#16-int-hashcode">16. int hashCode()</a></li>
+    <li><a href="#17-default-spliteratore-spliterator">17. default Spliterator<!-- raw HTML omitted --> spliterator()</a></li>
+    <li><a href="#18-default-streame-stream">18. default Stream<!-- raw HTML omitted --> stream()</a></li>
+    <li><a href="#19-default-streame-parallelstream">19. default Stream<!-- raw HTML omitted --> parallelStream()</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/07/Collection.png' width='30%' alt=''>
+</div>
+
+
 <p><code>Collection</code>接口是集合层次结构中的根接口。集合表示一组对象，每个对象称为元素。有些集合允许重复元素，有些则不允许。有些集合是有序的，有些是无序的。</p>
 <p>JDK没有提供该接口的任何直接实现：它提供了更具体的子接口的实现，如<code>Set</code>和<code>List</code>。此接口通常用于传递集合并在需要最大通用性的地方操作它们。</p>
 <p><code>Bags</code>或<code>multiset</code>（可能包含重复元素的无序集合）应该直接实现这个接口。</p>
@@ -614,15 +624,8 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 <p>如果此集合保证其迭代器返回元素的顺序，则此方法必须按相同的顺序返回元素。</p>
 <p>与<code>toArray()</code>方法类似，此方法充当基于数组的API和基于集合的API之间的桥梁。此外，此方法允许对输出数组的运行时类型进行精确控制，并且在某些情况下可以用来节省分配成本。</p>
 <p>假设<code>x</code>是一个已知仅包含字符串的集合。以下代码可用于将集合转储到新分配的<code>String</code>数组中：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">String</span><span style="color:#000">[]</span> <span style="color:#000">y</span> <span style="color:#000">=</span> <span style="color:#000">x</span><span style="color:#000">.</span><span style="color:#836c28">toArray</span><span style="color:#000">(</span><span style="color:#a90d91">new</span> <span style="color:#000">String</span><span style="color:#000">[</span><span style="color:#000">0</span><span style="color:#000">]);</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>请注意，<code>toArray(new Object[0])</code>在功能上与<code>toArray()</code>相同。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">String</span><span style="color:#000">[]</span> <span style="color:#000">y</span> <span style="color:#000">=</span> <span style="color:#000">x</span><span style="color:#000">.</span><span style="color:#836c28">toArray</span><span style="color:#000">(</span><span style="color:#a90d91">new</span> <span style="color:#000">String</span><span style="color:#000">[</span><span style="color:#000">0</span><span style="color:#000">]);</span>
+</code></pre></div><p>请注意，<code>toArray(new Object[0])</code>在功能上与<code>toArray()</code>相同。</p>
 <p>如果指定数组的运行时类型不是此集合中每个元素的运行时类型的超类型，则抛出<code>ArrayStoreException</code>。</p>
 <p>如果参数中指定的数组<code>a</code>为<code>null</code>，则抛出<code>NullPointerException</code>。</p>
 <div class="gdoc-page__anchorwrap">
@@ -688,24 +691,7 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 </div><p>1.8版本的JDK中新出的方法。删除此集合中满足给定断言的所有元素。在迭代过程中或断言中引发的错误或运行时异常将中继给调用方。</p>
 <p>默认实现使用其<code>iterator</code>遍历集合的所有元素。使用<code>Iterator</code>的<code>remove()</code>方法删除每个匹配的元素。如果集合的迭代器不支持删除，则将在第一个匹配元素上抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">removeIf</span><span style="color:#000">(</span><span style="color:#000">Predicate</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">super</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">filter</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">removeIf</span><span style="color:#000">(</span><span style="color:#000">Predicate</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">super</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">filter</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Objects</span><span style="color:#000">.</span><span style="color:#836c28">requireNonNull</span><span style="color:#000">(</span><span style="color:#000">filter</span><span style="color:#000">);</span>
     <span style="color:#a90d91">boolean</span> <span style="color:#000">removed</span> <span style="color:#000">=</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
     <span style="color:#a90d91">final</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">each</span> <span style="color:#000">=</span> <span style="color:#000">iterator</span><span style="color:#000">();</span>
@@ -718,9 +704,7 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">removed</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="13-boolean-retainallcollection-c">
         13. boolean retainAll(Collection&lt;?&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Collection/#13-boolean-retainallcollection-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 13. boolean retainAll(Collection&lt;?&gt; c)" href="#13-boolean-retainallcollection-c">
@@ -765,35 +749,18 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 <p>实现中应该说明拆分器报告的特征值。如果拆分器报告<code>Spliterator.SIZED</code>并且该集合不包含任何元素，则就不需要报告这些特征值。</p>
 <p>子类应该覆盖默认的实现，以返回一个更高效的拆分器。为了保持<code>stream()</code>和<code>parallelStream()</code>方法的预期惰性行为，拆分器应该具有<code>IMMUTABLE</code>或<code>CONCURRENT</code>的特征，或者是后期绑定。</p>
 <p>如果这些都不可行，则覆盖的类应描述拆分器记录的绑定和结构干扰策略，并应覆盖<code>stream()</code>和<code>parallelStream()</code>方法，以使用拆分器的<code>Supplier</code>创建流，如：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">s</span> <span style="color:#000">=</span> <span style="color:#000">StreamSupport</span><span style="color:#000">.</span><span style="color:#836c28">stream</span><span style="color:#000">(()</span> <span style="color:#000">-&gt;</span> <span style="color:#000">spliterator</span><span style="color:#000">(),</span> <span style="color:#000">spliteratorCharacteristics</span><span style="color:#000">)</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>这些要求确保<code>stream()</code>和<code>parallelStream()</code>方法生成的流将反映在终端流操作启动时集合的内容。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">s</span> <span style="color:#000">=</span> <span style="color:#000">StreamSupport</span><span style="color:#000">.</span><span style="color:#836c28">stream</span><span style="color:#000">(()</span> <span style="color:#000">-&gt;</span> <span style="color:#000">spliterator</span><span style="color:#000">(),</span> <span style="color:#000">spliteratorCharacteristics</span><span style="color:#000">)</span>
+</code></pre></div><p>这些要求确保<code>stream()</code>和<code>parallelStream()</code>方法生成的流将反映在终端流操作启动时集合的内容。</p>
 <p>默认实现通过集合的<code>Iterator</code>创建一个延迟绑定的拆分器。该拆分器继承了集合迭代器快速失败的特性。</p>
 <p>创建的<code>Spliterator</code>报告<code>Spliterator.SIZED</code>。</p>
 <p>创建的<code>Spliterator</code>另外还报告了<code>Spliterator.SUBSIZED</code>。</p>
 <p>如果拆分器没有覆盖任何元素，那么除了<code>SIZED</code>和<code>SUBSIZED</code>之外的其他特征值的报告，不会帮助客户端控制、专门化或简化计算。然而，这确实允许对空集合共享不可变的空拆分器实例（参见<code>Spliterators.emptySpliterator()</code>），并允许客户端确定这样的拆分器是否不包含元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@Override</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@Override</span>
 <span style="color:#a90d91">default</span> <span style="color:#000">Spliterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">spliterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">Spliterators</span><span style="color:#000">.</span><span style="color:#836c28">spliterator</span><span style="color:#000">(</span><span style="color:#a90d91">this</span><span style="color:#000">,</span> <span style="color:#000">0</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="18-default-streame-stream">
         18. default Stream<!-- raw HTML omitted --> stream()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Collection/#18-default-streame-stream" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 18. default Stream stream()" href="#18-default-streame-stream">
@@ -804,19 +771,10 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 <p>当<code>spliterator()</code>方法无法返回<code>IMMUTABLE</code>，<code>CONCURRENT</code>或延迟绑定的拆分器时，应重写此方法。 （有关详细信息，请参见<code>spliterator()</code>）</p>
 <p>默认实现通过集合的<code>Spliterator</code>创建顺序的<code>Stream</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">stream</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">stream</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">StreamSupport</span><span style="color:#000">.</span><span style="color:#836c28">stream</span><span style="color:#000">(</span><span style="color:#000">spliterator</span><span style="color:#000">(),</span> <span style="color:#a90d91">false</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="19-default-streame-parallelstream">
         19. default Stream<!-- raw HTML omitted --> parallelStream()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Collection/#19-default-streame-parallelstream" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 19. default Stream parallelStream()" href="#19-default-streame-parallelstream">
@@ -826,19 +784,10 @@ Bags或multiset（可能包含重复元素的无序集合）应该直接实现�
 </div><p>返回以此集合为源的可能并行的<code>Stream</code>。此方法也允许返回顺序<code>Stream</code>。</p>
 <p>当<code>spliterator()</code>方法无法返回<code>IMMUTABLE</code>，<code>CONCURRENT</code>或延迟绑定的拆分器时，应重写此方法。 （有关详细信息，请参见<code>spliterator()</code>）</p>
 <p>默认实现从集合的<code>Spliterator</code>创建并行的<code>Stream</code>。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">parallelStream</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#000">Stream</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">parallelStream</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">StreamSupport</span><span style="color:#000">.</span><span style="color:#836c28">stream</span><span style="color:#000">(</span><span style="color:#000">spliterator</span><span style="color:#000">(),</span> <span style="color:#a90d91">true</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 
     </article>
 

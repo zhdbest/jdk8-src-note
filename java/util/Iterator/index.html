@@ -10,15 +10,13 @@
 
 
 
-    <meta name="description" content="集合上的迭代器。Iterator在Java集合框架中取代Enumeration。迭代器与枚举有两个不同之处：
+    <meta name="description" content="1. boolean hasNext() 2. E next() 3. default void remove() 4. default void forEachRemaining(Consumer&lt;? super E&gt; action)   集合上的迭代器。Iterator在Java集合框架中取代Enumeration。迭代器与枚举有两个不同之处：
  迭代器允许调用者在迭代期间以明确的语义从基础集合中删除元素。 方法名已得到改进。  该接口也是Java集合框架的成员。
 1. boolean hasNext()    如果当前迭代器包含更多元素，则返回true。（换句话说，如果调用next方法将返回一个元素而不是抛出异常，则返回true。）
 2. E next()    返回当前迭代器的下一个元素，如果不存在，则抛出NoSuchElementException。
 3. default void remove()    从基础集合中移除此迭代器返回的最后一个元素（可选操作）。每次调用next方法后只能调用此方法一次。如果在进行迭代时以任何方式修改基础集合，而不是调用此方法，则此时当前迭代器的行为将变得不确定。 可以看到该方法定义中有default关键字，其有一个默认实现，但是此默认执行仅抛出了一个UnsupportedOperationException，并无其他操作。 如果next方法还没有被调用，或者remove方法在最后一次调用next方法之后已经被调用过，则抛出IllegalStateException。
 源码如下：
-1 2 3  default void remove() { throw new UnsupportedOperationException(&#34;remove&#34;); }   4. default void forEachRemaining(Consumer&lt;? super E&gt; action)    对剩下的元素执行参数中指定的操作，直到所有元素（即剩下的所有元素）都被处理或者有异常抛出。如果指定了迭代的顺序，操作将按照迭代的顺序执行。 由action引发的异常会被转发给调用者。
-源码如下：
-1 2 3 4 5  default void forEachRemaining(Consumer&lt;? super E&gt; action) { Objects.">
+default void remove() { throw new UnsupportedOperationException(&#34;remove&#34;); } 4. default void forEachRemaining(Consumer&lt;? super E&gt; action)    对剩下的元素执行参数中指定的操作，直到所有元素（即剩下的所有元素）都被处理或者有异常抛出。如果指定了迭代的顺序，操作将按照迭代的顺序执行。 由action引发的异常会被转发给调用者。">
 
 
 
@@ -531,7 +529,20 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>Iterator</h1>
-        <p>集合上的迭代器。<code>Iterator</code>在Java集合框架中取代<code>Enumeration</code>。迭代器与枚举有两个不同之处：</p>
+        
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-boolean-hasnext">1. boolean hasNext()</a></li>
+    <li><a href="#2-e-next">2. E next()</a></li>
+    <li><a href="#3-default-void-remove">3. default void remove()</a></li>
+    <li><a href="#4-default-void-foreachremainingconsumer-super-e-action">4. default void forEachRemaining(Consumer&lt;? super E&gt; action)</a></li>
+  </ul>
+</nav><hr></div>
+
+
+<p>集合上的迭代器。<code>Iterator</code>在Java集合框架中取代<code>Enumeration</code>。迭代器与枚举有两个不同之处：</p>
 <ul>
 <li>迭代器允许调用者在迭代期间以明确的语义从基础集合中删除元素。</li>
 <li>方法名已得到改进。</li>
@@ -562,19 +573,10 @@
     </h1>
 </div><p>从基础集合中移除此迭代器返回的最后一个元素（可选操作）。每次调用<code>next</code>方法后只能调用此方法一次。如果在进行迭代时以任何方式修改基础集合，而不是调用此方法，则此时当前迭代器的行为将变得不确定。 可以看到该方法定义中有<code>default</code>关键字，其有一个默认实现，但是此默认执行仅抛出了一个<code>UnsupportedOperationException</code>，并无其他操作。 如果<code>next</code>方法还没有被调用，或者<code>remove</code>方法在最后一次调用<code>next</code>方法之后已经被调用过，则抛出<code>IllegalStateException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">void</span> <span style="color:#000">remove</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">void</span> <span style="color:#000">remove</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">UnsupportedOperationException</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;remove&#34;</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="4-default-void-foreachremainingconsumer-super-e-action">
         4. default void forEachRemaining(Consumer&lt;? super E&gt; action)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Iterator/#4-default-void-foreachremainingconsumer-super-e-action" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 4. default void forEachRemaining(Consumer&lt;? super E&gt; action)" href="#4-default-void-foreachremainingconsumer-super-e-action">
@@ -583,41 +585,13 @@
     </h1>
 </div><p>对剩下的元素执行参数中指定的操作，直到所有元素（即剩下的所有元素）都被处理或者有异常抛出。如果指定了迭代的顺序，操作将按照迭代的顺序执行。 由<code>action</code>引发的异常会被转发给调用者。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">void</span> <span style="color:#000">forEachRemaining</span><span style="color:#000">(</span><span style="color:#000">Consumer</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">super</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">action</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">default</span> <span style="color:#a90d91">void</span> <span style="color:#000">forEachRemaining</span><span style="color:#000">(</span><span style="color:#000">Consumer</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">super</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">action</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">Objects</span><span style="color:#000">.</span><span style="color:#836c28">requireNonNull</span><span style="color:#000">(</span><span style="color:#000">action</span><span style="color:#000">);</span>
     <span style="color:#a90d91">while</span> <span style="color:#000">(</span><span style="color:#000">hasNext</span><span style="color:#000">())</span>
         <span style="color:#000">action</span><span style="color:#000">.</span><span style="color:#836c28">accept</span><span style="color:#000">(</span><span style="color:#000">next</span><span style="color:#000">());</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>测试用例：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@Test</span>
+</code></pre></div><p>测试用例：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">@Test</span>
 <span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">testIterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
   <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">Integer</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span> <span style="color:#000">=</span> <span style="color:#a90d91">new</span> <span style="color:#000">ArrayList</span><span style="color:#000">&lt;&gt;();</span>
   <span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">add</span><span style="color:#000">(</span><span style="color:#000">1</span><span style="color:#000">);</span>
@@ -630,22 +604,11 @@
   <span style="color:#000">iterator</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
   <span style="color:#000">iterator</span><span style="color:#000">.</span><span style="color:#836c28">forEachRemaining</span><span style="color:#000">(</span><span style="color:#000">System</span><span style="color:#000">.</span><span style="color:#836c28">out</span><span style="color:#000">::</span><span style="color:#000">println</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>输出：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">3</span>
+</code></pre></div><p>输出：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">3</span>
 <span style="color:#000">4</span>
 <span style="color:#000">5</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 
     </article>
 

@@ -10,21 +10,7 @@
 
 
 
-    <meta name="description" content="此类提供List接口的基本实现，以最大程度地减少实现支持“随机访问”数据存储（例如数组）所需的工作。对于顺序访问数据（例如链表），应优先使用AbstractSequentialList类。
-要实现不可修改的列表，编程者仅需扩展此类并为get和List的size方法提供实现。
-要实现可修改的列表，编程者必须另外重写set方法（否则将抛出UnsupportedOperationException）。如果列表是可变大小的，则程序员必须另外重写add和remove方法。
-根据Collection接口规范中的建议，编程者通常应提供一个void（无参数）的构造函数。
-与其他抽象集合的实现不同，编程者不必提供迭代器实现。迭代器和列表迭代器由此类在“随机访问”方法之上实现：
-get、set、add、remove。
-此类中每个非抽象方法的文档都详细描述了其实现。如果正在实现的集合允许更有效的实现，则可以覆盖这些方法中的每一个。
-该类是Java集合框架的成员。
-1. protected AbstractList()    唯一构造函数。 （用于子类构造函数的调用，通常是隐式的。）
-源码如下：
-1 2  protected AbstractList() { }   2. public boolean add(E e)    将指定的元素追加到此列表的末尾（可选操作）。
-支持此操作的列表可能会限制哪些元素可以添加到此列表。特别是，某些列表将拒绝添加空元素，而另一些列表将对可能添加的元素类型施加限制。列表类应在其文档中明确指定对可以添加哪些元素的所有限制。
-该方法的实现调用了add(int index, E element)方法，add(int index, E element)的默认实现是抛出UnsupportedOperationException，所以如果不重写它，那么调用当前方法也会抛出UnsupportedOperationException。
-源码如下：
-1 2 3 4  public boolean add(E e) { add(size(), e); return true; }   3. abstract public E get(int index);    获取列表在指定索引位置的元素。">
+    <meta name="description" content="1. protected AbstractList() 2. public boolean add(E e) 3. abstract public E get(int index); 4. public E set(int index, E element) 5. public void add(int index, E element) 6. public E remove(int index) 7. public int indexOf(Object o) 8. public int lastIndexOf(Object o) 9. public void clear() 10. public boolean addAll(int index, Collection&lt;? extends E&gt; c) 11. public Iteratoriterator() 12. public ListIteratorlistIterator() 13. public ListIteratorlistIterator(final int index) 14. private class Itr implements Iterator  14.">
 
 
 
@@ -537,7 +523,93 @@ get、set、add、remove。
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>AbstractList</h1>
-        <p><img src="https://img.hongmao.run/blog/2021/07/AbstractList.png" alt=""  /></p>
+        
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-protected-abstractlist">1. protected AbstractList()</a></li>
+    <li><a href="#2-public-boolean-adde-e">2. public boolean add(E e)</a></li>
+    <li><a href="#3-abstract-public-e-getint-index">3. abstract public E get(int index);</a></li>
+    <li><a href="#4-public-e-setint-index-e-element">4. public E set(int index, E element)</a></li>
+    <li><a href="#5-public-void-addint-index-e-element">5. public void add(int index, E element)</a></li>
+    <li><a href="#6-public-e-removeint-index">6. public E remove(int index)</a></li>
+    <li><a href="#7-public-int-indexofobject-o">7. public int indexOf(Object o)</a></li>
+    <li><a href="#8-public-int-lastindexofobject-o">8. public int lastIndexOf(Object o)</a></li>
+    <li><a href="#9-public-void-clear">9. public void clear()</a></li>
+    <li><a href="#10-public-boolean-addallint-index-collection-extends-e-c">10. public boolean addAll(int index, Collection&lt;? extends E&gt; c)</a></li>
+    <li><a href="#11-public-iteratore-iterator">11. public Iterator<!-- raw HTML omitted --> iterator()</a></li>
+    <li><a href="#12-public-listiteratore-listiterator">12. public ListIterator<!-- raw HTML omitted --> listIterator()</a></li>
+    <li><a href="#13-public-listiteratore-listiteratorfinal-int-index">13. public ListIterator<!-- raw HTML omitted --> listIterator(final int index)</a></li>
+    <li><a href="#14-private-class-itr-implements-iteratore">14. private class Itr implements Iterator<!-- raw HTML omitted --></a>
+      <ul>
+        <li><a href="#141-int-cursor--0">14.1 int cursor = 0;</a></li>
+        <li><a href="#142-int-lastret---1">14.2 int lastRet = -1;</a></li>
+        <li><a href="#143-int-expectedmodcount--modcount">14.3 int expectedModCount = modCount;</a></li>
+        <li><a href="#144-public-boolean-hasnext">14.4 public boolean hasNext()</a></li>
+        <li><a href="#145-public-e-next">14.5 public E next()</a></li>
+        <li><a href="#146-public-void-remove">14.6 public void remove()</a></li>
+        <li><a href="#147-final-void-checkforcomodification">14.7 final void checkForComodification()</a></li>
+      </ul>
+    </li>
+    <li><a href="#15-private-class-listitr-extends-itr-implements-listiteratore">15. private class ListItr extends Itr implements ListIterator<!-- raw HTML omitted --></a>
+      <ul>
+        <li><a href="#151-listitrint-index">15.1 ListItr(int index)</a></li>
+        <li><a href="#152-public-boolean-hasprevious">15.2 public boolean hasPrevious()</a></li>
+        <li><a href="#153-public-e-previous">15.3 public E previous()</a></li>
+        <li><a href="#154-public-int-nextindex">15.4 public int nextIndex()</a></li>
+        <li><a href="#155-public-int-previousindex">15.5 public int previousIndex()</a></li>
+        <li><a href="#156-public-void-sete-e">15.6 public void set(E e)</a></li>
+        <li><a href="#157-public-void-adde-e">15.7 public void add(E e)</a></li>
+      </ul>
+    </li>
+    <li><a href="#16-public-liste-sublistint-fromindex-int-toindex">16. public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)</a></li>
+    <li><a href="#17-public-boolean-equalsobject-o">17. public boolean equals(Object o)</a></li>
+    <li><a href="#18-public-int-hashcode">18. public int hashCode()</a></li>
+    <li><a href="#19-protected-void-removerangeint-fromindex-int-toindex">19. protected void removeRange(int fromIndex, int toIndex)</a></li>
+    <li><a href="#20-protected-transient-int-modcount--0">20. protected transient int modCount = 0;</a></li>
+    <li><a href="#21-private-void-rangecheckforaddint-index">21. private void rangeCheckForAdd(int index)</a></li>
+    <li><a href="#22-private-string-outofboundsmsgint-index">22. private String outOfBoundsMsg(int index)</a></li>
+    <li><a href="#同一文件中的其他类">同一文件中的其他类</a>
+      <ul>
+        <li><a href="#1-class-subliste-extends-abstractliste">1. class SubList<!-- raw HTML omitted --> extends AbstractList<!-- raw HTML omitted --></a>
+          <ul>
+            <li><a href="#11-private-final-abstractliste-l">1.1 private final AbstractList<!-- raw HTML omitted --> l;</a></li>
+            <li><a href="#12-private-final-int-offset">1.2 private final int offset;</a></li>
+            <li><a href="#13-private-int-size">1.3 private int size;</a></li>
+            <li><a href="#14-sublistabstractliste-list-int-fromindex-int-toindex">1.4 SubList(AbstractList<!-- raw HTML omitted --> list, int fromIndex, int toIndex)</a></li>
+            <li><a href="#15-public-e-setint-index-e-element">1.5 public E set(int index, E element)</a></li>
+            <li><a href="#16-public-e-getint-index">1.6 public E get(int index)</a></li>
+            <li><a href="#17-public-int-size">1.7 public int size()</a></li>
+            <li><a href="#18-public-void-addint-index-e-element">1.8 public void add(int index, E element)</a></li>
+            <li><a href="#19-public-e-removeint-index">1.9 public E remove(int index)</a></li>
+            <li><a href="#110-protected-void-removerangeint-fromindex-int-toindex">1.10 protected void removeRange(int fromIndex, int toIndex)</a></li>
+            <li><a href="#111-public-boolean-addallcollection-extends-e-c">1.11 public boolean addAll(Collection&lt;? extends E&gt; c)</a></li>
+            <li><a href="#112-public-boolean-addallint-index-collection-extends-e-c">1.12 public boolean addAll(int index, Collection&lt;? extends E&gt; c)</a></li>
+            <li><a href="#113-public-iteratore-iterator">1.13 public Iterator<!-- raw HTML omitted --> iterator()</a></li>
+            <li><a href="#114-public-listiteratore-listiteratorfinal-int-index">1.14 public ListIterator<!-- raw HTML omitted --> listIterator(final int index)</a></li>
+            <li><a href="#115-public-liste-sublistint-fromindex-int-toindex">1.15 public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)</a></li>
+            <li><a href="#116-private-void-rangecheckint-index">1.16 private void rangeCheck(int index)</a></li>
+            <li><a href="#117-private-void-rangecheckforaddint-index">1.17 private void rangeCheckForAdd(int index)</a></li>
+            <li><a href="#118-private-string-outofboundsmsgint-index">1.18 private String outOfBoundsMsg(int index)</a></li>
+            <li><a href="#119-private-void-checkforcomodification">1.19 private void checkForComodification()</a></li>
+          </ul>
+        </li>
+        <li><a href="#2-class-randomaccesssubliste-extends-subliste-implements-randomaccess">2. class RandomAccessSubList<!-- raw HTML omitted --> extends SubList<!-- raw HTML omitted --> implements RandomAccess</a>
+          <ul>
+            <li><a href="#21-randomaccesssublistabstractliste-list-int-fromindex-int-toindex">2.1 RandomAccessSubList(AbstractList<!-- raw HTML omitted --> list, int fromIndex, int toIndex)</a></li>
+            <li><a href="#22-public-liste-sublistint-fromindex-int-toindex">2.2 public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)</a></li>
+          </ul>
+        </li>
+      </ul></nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/07/AbstractList.png' width='50%' alt=''>
+</div>
+
+
 <p>此类提供<code>List</code>接口的基本实现，以最大程度地减少实现支持“随机访问”数据存储（例如数组）所需的工作。对于顺序访问数据（例如链表），应优先使用<code>AbstractSequentialList</code>类。</p>
 <p>要实现不可修改的列表，编程者仅需扩展此类并为<code>get</code>和<code>List</code>的<code>size</code>方法提供实现。</p>
 <p>要实现可修改的列表，编程者必须另外重写<code>set</code>方法（否则将抛出<code>UnsupportedOperationException</code>）。如果列表是可变大小的，则程序员必须另外重写<code>add</code>和<code>remove</code>方法。</p>
@@ -555,17 +627,9 @@ get、set、add、remove。
     </h1>
 </div><p>唯一构造函数。 （用于子类构造函数的调用，通常是隐式的。）</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#000">AbstractList</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#000">AbstractList</span><span style="color:#000">()</span> <span style="color:#000">{</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="2-public-boolean-adde-e">
         2. public boolean add(E e)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#2-public-boolean-adde-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. public boolean add(E e)" href="#2-public-boolean-adde-e">
@@ -576,21 +640,11 @@ get、set、add、remove。
 <p>支持此操作的列表可能会限制哪些元素可以添加到此列表。特别是，某些列表将拒绝添加空元素，而另一些列表将对可能添加的元素类型施加限制。列表类应在其文档中明确指定对可以添加哪些元素的所有限制。</p>
 <p>该方法的实现调用了<code>add(int index, E element)</code>方法，<code>add(int index, E element)</code>的默认实现是抛出<code>UnsupportedOperationException</code>，所以如果不重写它，那么调用当前方法也会抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">size</span><span style="color:#000">(),</span> <span style="color:#000">e</span><span style="color:#000">);</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">true</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="3-abstract-public-e-getint-index">
         3. abstract public E get(int index);
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#3-abstract-public-e-getint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 3. abstract public E get(int index);" href="#3-abstract-public-e-getint-index">
@@ -607,19 +661,10 @@ get、set、add、remove。
     </h1>
 </div><p>在指定的索引位置设置指定的元素，默认实现是抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">UnsupportedOperationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="5-public-void-addint-index-e-element">
         5. public void add(int index, E element)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#5-public-void-addint-index-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 5. public void add(int index, E element)" href="#5-public-void-addint-index-e-element">
@@ -628,19 +673,10 @@ get、set、add、remove。
     </h1>
 </div><p>在指定的索引位置添加指定的元素，默认实现是抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">UnsupportedOperationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="6-public-e-removeint-index">
         6. public E remove(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#6-public-e-removeint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 6. public E remove(int index)" href="#6-public-e-removeint-index">
@@ -649,19 +685,10 @@ get、set、add、remove。
     </h1>
 </div><p>删除指定索引位置的元素，默认实现是抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">UnsupportedOperationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="7-public-int-indexofobject-o">
         7. public int indexOf(Object o)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#7-public-int-indexofobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. public int indexOf(Object o)" href="#7-public-int-indexofobject-o">
@@ -674,26 +701,7 @@ get、set、add、remove。
 <p>如果参数中给定的元素不为<code>null</code>，则通过<code>equals</code>方法判断<code>next</code>获取的元素是否和参数中给定的元素相同，若相同则返回则返回<code>previousIndex</code>。</p>
 <p>如果未能找到，则返回-1。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">indexOf</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">indexOf</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 此处获取的是列表迭代器
 </span><span style="color:#177500"></span>    <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">listIterator</span><span style="color:#000">();</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">o</span><span style="color:#000">==</span><span style="color:#a90d91">null</span><span style="color:#000">)</span> <span style="color:#000">{</span>
@@ -708,9 +716,7 @@ get、set、add、remove。
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">-</span><span style="color:#000">1</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="8-public-int-lastindexofobject-o">
         8. public int lastIndexOf(Object o)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#8-public-int-lastindexofobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 8. public int lastIndexOf(Object o)" href="#8-public-int-lastindexofobject-o">
@@ -720,25 +726,7 @@ get、set、add、remove。
 </div><p>此实现首先获取一个指向列表末尾的列表迭代器（使用<code>listIterator(size())</code>）。然后，向后迭代列表，直到找到指定的元素，或者到达列表的开头。</p>
 <p>寻找元素的方法和<code>indexOf</code>方法一致，区别在于，本方法是从后往前找，也就是找的是指定的元素在列表中最后一次出现的位置，没找到则返回-1。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">lastIndexOf</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">lastIndexOf</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 获取一个从列表末尾开始的迭代器
 </span><span style="color:#177500"></span>    <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#000">size</span><span style="color:#000">());</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">o</span><span style="color:#000">==</span><span style="color:#a90d91">null</span><span style="color:#000">)</span> <span style="color:#000">{</span>
@@ -752,9 +740,7 @@ get、set、add、remove。
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">-</span><span style="color:#000">1</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="9-public-void-clear">
         9. public void clear()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#9-public-void-clear" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 9. public void clear()" href="#9-public-void-clear">
@@ -765,19 +751,10 @@ get、set、add、remove。
 <p>该实现将调用<code>removeRange(0, size())</code>。</p>
 <p>请注意，如果未重写<code>remove(int index)</code>或<code>removeRange(int fromIndex, int toIndex)</code>，本方法将抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">clear</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">clear</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#000">removeRange</span><span style="color:#000">(</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">size</span><span style="color:#000">());</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="10-public-boolean-addallint-index-collection-extends-e-c">
         10. public boolean addAll(int index, Collection&lt;? extends E&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#10-public-boolean-addallint-index-collection-extends-e-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 10. public boolean addAll(int index, Collection&lt;? extends E&gt; c)" href="#10-public-boolean-addallint-index-collection-extends-e-c">
@@ -788,22 +765,7 @@ get、set、add、remove。
 <p>为了提高效率，许多实现将覆盖此方法。</p>
 <p>请注意，除非重写<code>add(int, Object)</code>和<code>add(int, E)</code>，否则此实现将抛出<code>UnsupportedOperationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 判断指定的索引是否符合插入位置的范围限制
 </span><span style="color:#177500"></span>    <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#a90d91">boolean</span> <span style="color:#000">modified</span> <span style="color:#000">=</span> <span style="color:#a90d91">false</span><span style="color:#000">;</span>
@@ -814,9 +776,7 @@ get、set、add、remove。
     <span style="color:#000">}</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">modified</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="11-public-iteratore-iterator">
         11. public Iterator<!-- raw HTML omitted --> iterator()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#11-public-iteratore-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 11. public Iterator iterator()" href="#11-public-iteratore-iterator">
@@ -828,21 +788,11 @@ get、set、add、remove。
 <p>请注意，除非重写列表的<code>remove(int)</code>方法，否则此方法返回的迭代器将在调用其<code>remove</code>方法时抛出<code>UnsupportedOperationException</code>。</p>
 <p>如规范中对<code>modCount</code>字段的描述，该实现在面对并发修改时抛出运行时异常。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">iterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">iterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 返回一个Itr实例
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#a90d91">new</span> <span style="color:#000">Itr</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="12-public-listiteratore-listiterator">
         12. public ListIterator<!-- raw HTML omitted --> listIterator()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#12-public-listiteratore-listiterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 12. public ListIterator listIterator()" href="#12-public-listiteratore-listiterator">
@@ -851,19 +801,10 @@ get、set、add、remove。
     </h1>
 </div><p>本方法将调用<code>listIterator(final int index)</code>方法，只不过传入的<code>index</code>为0。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#000">0</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="13-public-listiteratore-listiteratorfinal-int-index">
         13. public ListIterator<!-- raw HTML omitted --> listIterator(final int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#13-public-listiteratore-listiteratorfinal-int-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 13. public ListIterator listIterator(final int index)" href="#13-public-listiteratore-listiteratorfinal-int-index">
@@ -874,27 +815,14 @@ get、set、add、remove。
 <p>请注意，此实现返回的列表迭代器在调用其<code>remove</code>，<code>set</code>和<code>add</code>方法时抛出<code>UnsupportedOperationException</code>，除非列表的<code>remove(int)</code>，<code>set(int, E)</code>和<code>add(int, E)</code>方法已被重写。</p>
 <p>如规范中对<code>modCount</code>字段的描述，该实现在面对并发修改时抛出运行时异常。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#a90d91">final</span> <span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#a90d91">final</span> <span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 判断index的大小是否符合范围限制
 </span><span style="color:#177500"></span>    <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
 
     <span style="color:#177500">// 返回一个从index位置开始的ListItr实例
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#a90d91">new</span> <span style="color:#000">ListItr</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="14-private-class-itr-implements-iteratore">
         14. private class Itr implements Iterator<!-- raw HTML omitted -->
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#14-private-class-itr-implements-iteratore" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14. private class Itr implements Iterator" href="#14-private-class-itr-implements-iteratore">
@@ -934,21 +862,11 @@ get、set、add、remove。
     </h2>
 </div><p>判断是否还有其他元素，如果调用<code>next</code>还能获取到元素，则该方法应返回<code>true</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">hasNext</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">hasNext</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 判断当前游标cursor是否与列表的元素数量相等
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">cursor</span> <span style="color:#000">!=</span> <span style="color:#000">size</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="145-public-e-next">
         14.5 public E next()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#145-public-e-next" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14.5 public E next()" href="#145-public-e-next">
@@ -957,31 +875,7 @@ get、set、add、remove。
     </h2>
 </div><p>获取下一个元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">next</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">next</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 检查是否存在并发修改
 </span><span style="color:#177500"></span>    <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#a90d91">try</span> <span style="color:#000">{</span>
@@ -1001,9 +895,7 @@ get、set、add、remove。
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">NoSuchElementException</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="146-public-void-remove">
         14.6 public void remove()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#146-public-void-remove" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14.6 public void remove()" href="#146-public-void-remove">
@@ -1012,32 +904,7 @@ get、set、add、remove。
     </h2>
 </div><p>删除当前元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">remove</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">remove</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 如果lastRet小于0，则抛出IllegalStateException
 </span><span style="color:#177500"></span>    <span style="color:#177500">// 这说明要么迭代器初始化好之后还没有调用过next或previous、要么当前元素已被删除了
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">lastRet</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span><span style="color:#000">)</span>
@@ -1058,9 +925,7 @@ get、set、add、remove。
 </span><span style="color:#177500"></span>        <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">ConcurrentModificationException</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="147-final-void-checkforcomodification">
         14.7 final void checkForComodification()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#147-final-void-checkforcomodification" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14.7 final void checkForComodification()" href="#147-final-void-checkforcomodification">
@@ -1069,21 +934,11 @@ get、set、add、remove。
     </h2>
 </div><p>该方法旨在检查是否存在并发修改，判断方法即判断<code>expectedModCount</code>是否等于<code>modCount</code>，不等于则说明存在并发修改，则抛出<code>ConcurrentModificationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">final</span> <span style="color:#a90d91">void</span> <span style="color:#000">checkForComodification</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">final</span> <span style="color:#a90d91">void</span> <span style="color:#000">checkForComodification</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">modCount</span> <span style="color:#000">!=</span> <span style="color:#000">expectedModCount</span><span style="color:#000">)</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">ConcurrentModificationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="15-private-class-listitr-extends-itr-implements-listiteratore">
         15. private class ListItr extends Itr implements ListIterator<!-- raw HTML omitted -->
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#15-private-class-listitr-extends-itr-implements-listiteratore" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15. private class ListItr extends Itr implements ListIterator" href="#15-private-class-listitr-extends-itr-implements-listiteratore">
@@ -1099,19 +954,10 @@ get、set、add、remove。
     </h2>
 </div><p>构造一个列表迭代器，使用给定的参数<code>index</code>作为当前列表迭代器的游标位置。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">ListItr</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">ListItr</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">cursor</span> <span style="color:#000">=</span> <span style="color:#000">index</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="152-public-boolean-hasprevious">
         15.2 public boolean hasPrevious()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#152-public-boolean-hasprevious" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.2 public boolean hasPrevious()" href="#152-public-boolean-hasprevious">
@@ -1120,19 +966,10 @@ get、set、add、remove。
     </h2>
 </div><p>判断当前迭代器前面是否还有元素，判断方法是：当前的游标位置<code>cursor</code>是否为0，为0则说明前面已经没有元素了，此时返回<code>false</code>，否则返回<code>true</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">hasPrevious</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">hasPrevious</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">cursor</span> <span style="color:#000">!=</span> <span style="color:#000">0</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="153-public-e-previous">
         15.3 public E previous()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#153-public-e-previous" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.3 public E previous()" href="#153-public-e-previous">
@@ -1142,26 +979,7 @@ get、set、add、remove。
 </div><p>获取上一个元素，获取方法为：</p>
 <p>使用当前游标位置减1，算出上一个元素的位置，然后取出该位置的元素，同时设置<code>lastRet</code>和游标位置<code>cursor</code>为该位置，然后返回该元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">previous</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">previous</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#a90d91">try</span> <span style="color:#000">{</span>
         <span style="color:#177500">// 将当前游标的前一位赋值给变量i
@@ -1176,9 +994,7 @@ get、set、add、remove。
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">NoSuchElementException</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="154-public-int-nextindex">
         15.4 public int nextIndex()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#154-public-int-nextindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.4 public int nextIndex()" href="#154-public-int-nextindex">
@@ -1187,19 +1003,10 @@ get、set、add、remove。
     </h2>
 </div><p>获取下一个元素的索引，获取方法是：直接返回当前游标位置<code>cursor</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">nextIndex</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">nextIndex</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">cursor</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="155-public-int-previousindex">
         15.5 public int previousIndex()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#155-public-int-previousindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.5 public int previousIndex()" href="#155-public-int-previousindex">
@@ -1208,19 +1015,10 @@ get、set、add、remove。
     </h2>
 </div><p>获取上一个元素的索引，获取方法是：返回当前游标位置<code>cursor</code>-1。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">previousIndex</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">previousIndex</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">cursor</span><span style="color:#000">-</span><span style="color:#000">1</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="156-public-void-sete-e">
         15.6 public void set(E e)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#156-public-void-sete-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.6 public void set(E e)" href="#156-public-void-sete-e">
@@ -1230,27 +1028,7 @@ get、set、add、remove。
 </div><p>设置当前位置（<code>lastRet</code>位置）的元素为参数中给定的元素，也即替换最后一次调用<code>next</code>或<code>previous</code>方法得到的元素。</p>
 <p>首先，判断<code>lastRet</code>是否小于0，小于0说明其还未调用过<code>next</code>或<code>previous</code>或者调用过<code>remove</code>方法已将当前位置的元素删掉或使用<code>add</code>方法添加了元素，如果小于0，则抛出<code>IllegalStateException</code>。然后检查是否存在并发修改，调用<code>AbstractList</code>的<code>set</code>方法进行赋值。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// lastRet小于0说明其还未调用过next或previous
 </span><span style="color:#177500"></span>    <span style="color:#177500">// 或者调用过remove方法已将当前位置的元素删掉
 </span><span style="color:#177500"></span>    <span style="color:#177500">// 或者使用add方法添加了元素
@@ -1266,9 +1044,7 @@ get、set、add、remove。
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">ConcurrentModificationException</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="157-public-void-adde-e">
         15.7 public void add(E e)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#157-public-void-adde-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15.7 public void add(E e)" href="#157-public-void-adde-e">
@@ -1277,28 +1053,7 @@ get、set、add、remove。
     </h2>
 </div><p>首先检查是否存在并发修改，然后在调用<code>AbstractList</code>的<code>add</code>方法在当前游标位置添加给定的元素。然后，将<code>lastRet</code>置为-1，同时将当前游标位置<code>cursor</code>加1。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
 
     <span style="color:#a90d91">try</span> <span style="color:#000">{</span>
@@ -1315,9 +1070,7 @@ get、set、add、remove。
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">ConcurrentModificationException</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="16-public-liste-sublistint-fromindex-int-toindex">
         16. public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#16-public-liste-sublistint-fromindex-int-toindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 16. public List subList(int fromIndex, int toIndex)" href="#16-public-liste-sublistint-fromindex-int-toindex">
@@ -1329,27 +1082,14 @@ get、set、add、remove。
 <p><code>listIterator(int)</code>方法在来源列表的列表迭代器上返回“包装对象”，该列表迭代器是使用来源列表上的相应方法创建的。<code>iterator</code>方法仅返回<code>listIterator()</code>，而<code>size</code>方法仅返回子类的<code>size</code>字段。</p>
 <p>所有方法首先检查来源列表的实际<code>modCount</code>是否等于其期望值，如果不是，则抛出<code>ConcurrentModificationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 判断当前列表是否是RandomAccess的实例
 </span><span style="color:#177500"></span>    <span style="color:#177500">// 若是，则返回一个RandomAccessSubList实例，否则返回SubList实例
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">(</span><span style="color:#a90d91">this</span> <span style="color:#a90d91">instanceof</span> <span style="color:#000">RandomAccess</span> <span style="color:#000">?</span>
             <span style="color:#a90d91">new</span> <span style="color:#000">RandomAccessSubList</span><span style="color:#000">&lt;&gt;(</span><span style="color:#a90d91">this</span><span style="color:#000">,</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">:</span>
             <span style="color:#a90d91">new</span> <span style="color:#000">SubList</span><span style="color:#000">&lt;&gt;(</span><span style="color:#a90d91">this</span><span style="color:#000">,</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">));</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="17-public-boolean-equalsobject-o">
         17. public boolean equals(Object o)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#17-public-boolean-equalsobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 17. public boolean equals(Object o)" href="#17-public-boolean-equalsobject-o">
@@ -1359,32 +1099,7 @@ get、set、add、remove。
 </div><p>比较指定对象与此列表是否相等。当且仅当指定对象也是一个列表，并且两个列表具有相同的大小，并且两个列表中所有对应的元素对都相等时，才返回<code>true</code>。 （如果<code>(e1==null ? e2==null : e1.equals(e2))</code>，则两个元素<code>e1</code>和<code>e2</code>是相等。）换句话说，如果两个列表包含相同顺序的相同元素，则定义为相等。</p>
 <p>此实现首先检查指定的对象是否是此列表。如果是，则返回<code>true</code>，如果不是，则检查指定对象是否为列表。如果不是列表，则返回<code>false</code>，如果是列表，则遍历两个列表，比较对应的元素对。如果有任何比较返回<code>false</code>，则此方法返回<code>false</code>。如果一个迭代器在另一个迭代器之前用尽了元素，则返回<code>false</code>（因为列表的长度不相等），否则，当迭代完成时，它将返回<code>true</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">equals</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">equals</span><span style="color:#000">(</span><span style="color:#000">Object</span> <span style="color:#000">o</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 指定对象等于当前列表则直接返回true
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">o</span> <span style="color:#000">==</span> <span style="color:#a90d91">this</span><span style="color:#000">)</span>
         <span style="color:#a90d91">return</span> <span style="color:#a90d91">true</span><span style="color:#000">;</span>
@@ -1405,9 +1120,7 @@ get、set、add、remove。
     <span style="color:#177500">// 如果上面结束遍历，但仍有一个集合还有未迭代到的元素，则返回false
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">!(</span><span style="color:#000">e1</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">()</span> <span style="color:#000">||</span> <span style="color:#000">e2</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">());</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="18-public-int-hashcode">
         18. public int hashCode()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#18-public-int-hashcode" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 18. public int hashCode()" href="#18-public-int-hashcode">
@@ -1417,25 +1130,13 @@ get、set、add、remove。
 </div><p>返回该列表的hash值。</p>
 <p>此实现完全使用<code>List</code>中<code>hashCode</code>方法的文档中定义列表哈希函数的代码。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">hashCode</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">hashCode</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">int</span> <span style="color:#000">hashCode</span> <span style="color:#000">=</span> <span style="color:#000">1</span><span style="color:#000">;</span>
     <span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">E</span> <span style="color:#000">e</span> <span style="color:#000">:</span> <span style="color:#a90d91">this</span><span style="color:#000">)</span>
         <span style="color:#000">hashCode</span> <span style="color:#000">=</span> <span style="color:#000">31</span><span style="color:#000">*</span><span style="color:#000">hashCode</span> <span style="color:#000">+</span> <span style="color:#000">(</span><span style="color:#000">e</span><span style="color:#000">==</span><span style="color:#a90d91">null</span> <span style="color:#000">?</span> <span style="color:#000">0</span> <span style="color:#000">:</span> <span style="color:#000">e</span><span style="color:#000">.</span><span style="color:#836c28">hashCode</span><span style="color:#000">());</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">hashCode</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="19-protected-void-removerangeint-fromindex-int-toindex">
         19. protected void removeRange(int fromIndex, int toIndex)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#19-protected-void-removerangeint-fromindex-int-toindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 19. protected void removeRange(int fromIndex, int toIndex)" href="#19-protected-void-removerangeint-fromindex-int-toindex">
@@ -1446,20 +1147,7 @@ get、set、add、remove。
 <p>此列表及其子列表上的<code>clear</code>操作调用此方法。重写此方法以利用列表实现的内部功能可以大大地改善此列表及其子列表上的<code>clear</code>操作的性能。</p>
 <p>此实现获取位于<code>fromIndex</code>之前位置的列表迭代器，并反复调用<code>ListIterator.next</code>，然后依次调用<code>ListIterator.remove</code>，直到删除了整个范围的元素。 注意：如果<code>ListIterator.remove</code>需要线性时间，则此实现需要平方时间。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#a90d91">void</span> <span style="color:#000">removeRange</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#a90d91">void</span> <span style="color:#000">removeRange</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 获取从fromIndex位置的列表迭代器
 </span><span style="color:#177500"></span>    <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">it</span> <span style="color:#000">=</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#000">fromIndex</span><span style="color:#000">);</span>
     <span style="color:#177500">// 使用toIndex - fromIndex计算出要删除元素的个数，然后遍历，逐个删除元素
@@ -1468,9 +1156,7 @@ get、set、add、remove。
         <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">remove</span><span style="color:#000">();</span>
     <span style="color:#000">}</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="20-protected-transient-int-modcount--0">
         20. protected transient int modCount = 0;
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#20-protected-transient-int-modcount--0" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 20. protected transient int modCount = 0;" href="#20-protected-transient-int-modcount--0">
@@ -1489,21 +1175,11 @@ get、set、add、remove。
     </h1>
 </div><p>添加元素到列表之前对要添加元素的位置进行校验，校验方式为：参数中指定的<code>index</code>是否小于0或者大于<code>size()</code>，若是则抛出<code>IndexOutOfBoundsException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">index</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span> <span style="color:#000">||</span> <span style="color:#000">index</span> <span style="color:#000">&gt;</span> <span style="color:#000">size</span><span style="color:#000">())</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">IndexOutOfBoundsException</span><span style="color:#000">(</span><span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">));</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="22-private-string-outofboundsmsgint-index">
         22. private String outOfBoundsMsg(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#22-private-string-outofboundsmsgint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 22. private String outOfBoundsMsg(int index)" href="#22-private-string-outofboundsmsgint-index">
@@ -1512,19 +1188,10 @@ get、set、add、remove。
     </h1>
 </div><p>获取一个数组越界的提示信息。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#000">String</span> <span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#000">String</span> <span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#c41a16">&#34;Index: &#34;</span><span style="color:#000">+</span><span style="color:#000">index</span><span style="color:#000">+</span><span style="color:#c41a16">&#34;, Size: &#34;</span><span style="color:#000">+</span><span style="color:#000">size</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h1 id="同一文件中的其他类">
         同一文件中的其他类
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#同一文件中的其他类" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 同一文件中的其他类" href="#%e5%90%8c%e4%b8%80%e6%96%87%e4%bb%b6%e4%b8%ad%e7%9a%84%e5%85%b6%e4%bb%96%e7%b1%bb">
@@ -1573,26 +1240,7 @@ get、set、add、remove。
     </h3>
 </div><p>构造方法，构造一个<code>SubList</code>实例。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">SubList</span><span style="color:#000">(</span><span style="color:#000">AbstractList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">SubList</span><span style="color:#000">(</span><span style="color:#000">AbstractList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 先进行校验
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">fromIndex</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span><span style="color:#000">)</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">IndexOutOfBoundsException</span><span style="color:#000">(</span><span style="color:#c41a16">&#34;fromIndex = &#34;</span> <span style="color:#000">+</span> <span style="color:#000">fromIndex</span><span style="color:#000">);</span>
@@ -1607,9 +1255,7 @@ get、set、add、remove。
     <span style="color:#000">size</span> <span style="color:#000">=</span> <span style="color:#000">toIndex</span> <span style="color:#000">-</span> <span style="color:#000">fromIndex</span><span style="color:#000">;</span>
     <span style="color:#a90d91">this</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span> <span style="color:#000">=</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="15-public-e-setint-index-e-element">
         1.5 public E set(int index, E element)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#15-public-e-setint-index-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.5 public E set(int index, E element)" href="#15-public-e-setint-index-e-element">
@@ -1618,19 +1264,7 @@ get、set、add、remove。
     </h3>
 </div><p>替换指定索引位置的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">set</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 指定索引的合法性检查
 </span><span style="color:#177500"></span>    <span style="color:#000">rangeCheck</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#177500">// 检查是否存在并发修改
@@ -1638,9 +1272,7 @@ get、set、add、remove。
     <span style="color:#177500">// 调用负列表的set方法进行元素的替换，父列表对应的索引位置为：当前指定的索引 + 偏移量
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">set</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">+</span><span style="color:#000">offset</span><span style="color:#000">,</span> <span style="color:#000">element</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="16-public-e-getint-index">
         1.6 public E get(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#16-public-e-getint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.6 public E get(int index)" href="#16-public-e-getint-index">
@@ -1649,25 +1281,13 @@ get、set、add、remove。
     </h3>
 </div><p>获取指定索引位置的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">get</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">get</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 与set方法相同的套路，索引范围检查、并发检查、通过父列表获取指定位置的元素
 </span><span style="color:#177500"></span>    <span style="color:#000">rangeCheck</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">+</span><span style="color:#000">offset</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="17-public-int-size">
         1.7 public int size()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#17-public-int-size" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.7 public int size()" href="#17-public-int-size">
@@ -1676,23 +1296,12 @@ get、set、add、remove。
     </h3>
 </div><p>获取当前列表的大小。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">size</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">int</span> <span style="color:#000">size</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 先调用checkForComodification进行并发修改检查，再返回size
 </span><span style="color:#177500"></span>    <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">size</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="18-public-void-addint-index-e-element">
         1.8 public void add(int index, E element)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#18-public-void-addint-index-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.8 public void add(int index, E element)" href="#18-public-void-addint-index-e-element">
@@ -1701,20 +1310,7 @@ get、set、add、remove。
     </h3>
 </div><p>在指定的索引位置插入指定元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">void</span> <span style="color:#000">add</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">E</span> <span style="color:#000">element</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#177500">// 使用父列表的add方法添加元素
@@ -1723,9 +1319,7 @@ get、set、add、remove。
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">this</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span> <span style="color:#000">=</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span><span style="color:#000">;</span>
     <span style="color:#000">size</span><span style="color:#000">++;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="19-public-e-removeint-index">
         1.9 public E remove(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#19-public-e-removeint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.9 public E remove(int index)" href="#19-public-e-removeint-index">
@@ -1734,20 +1328,7 @@ get、set、add、remove。
     </h3>
 </div><p>删除指定索引位置的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">E</span> <span style="color:#000">remove</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">rangeCheck</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#177500">// 使用父列表的remove方法删除指定元素
@@ -1756,9 +1337,7 @@ get、set、add、remove。
     <span style="color:#000">size</span><span style="color:#000">--;</span>
     <span style="color:#a90d91">return</span> <span style="color:#000">result</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="110-protected-void-removerangeint-fromindex-int-toindex">
         1.10 protected void removeRange(int fromIndex, int toIndex)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#110-protected-void-removerangeint-fromindex-int-toindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.10 protected void removeRange(int fromIndex, int toIndex)" href="#110-protected-void-removerangeint-fromindex-int-toindex">
@@ -1767,27 +1346,14 @@ get、set、add、remove。
     </h3>
 </div><p>删除指定索引范围内的元素。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#a90d91">void</span> <span style="color:#000">removeRange</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#a90d91">void</span> <span style="color:#000">removeRange</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#177500">// 使用父列表的removeRange方法删除元素
 </span><span style="color:#177500"></span>    <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">removeRange</span><span style="color:#000">(</span><span style="color:#000">fromIndex</span><span style="color:#000">+</span><span style="color:#000">offset</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">+</span><span style="color:#000">offset</span><span style="color:#000">);</span>
     <span style="color:#a90d91">this</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span> <span style="color:#000">=</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span><span style="color:#000">;</span>
     <span style="color:#000">size</span> <span style="color:#000">-=</span> <span style="color:#000">(</span><span style="color:#000">toIndex</span><span style="color:#000">-</span><span style="color:#000">fromIndex</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="111-public-boolean-addallcollection-extends-e-c">
         1.11 public boolean addAll(Collection&lt;? extends E&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#111-public-boolean-addallcollection-extends-e-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.11 public boolean addAll(Collection&lt;? extends E&gt; c)" href="#111-public-boolean-addallcollection-extends-e-c">
@@ -1796,21 +1362,11 @@ get、set、add、remove。
     </h3>
 </div><p>将指定集合内的元素添加到当前列表的末尾。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 当前列表的末尾并非一定是父列表的末尾，所以此处调用自己的addAll方法将元素插入到本列表末尾（即索引位置为size处）
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#000">size</span><span style="color:#000">,</span> <span style="color:#000">c</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="112-public-boolean-addallint-index-collection-extends-e-c">
         1.12 public boolean addAll(int index, Collection&lt;? extends E&gt; c)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#112-public-boolean-addallint-index-collection-extends-e-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.12 public boolean addAll(int index, Collection&lt;? extends E&gt; c)" href="#112-public-boolean-addallint-index-collection-extends-e-c">
@@ -1819,27 +1375,7 @@ get、set、add、remove。
     </h3>
 </div><p>将指定集合内的元素添加到当前列表的指定位置。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#a90d91">boolean</span> <span style="color:#000">addAll</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">,</span> <span style="color:#000">Collection</span><span style="color:#000">&lt;?</span> <span style="color:#a90d91">extends</span> <span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">c</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 对指定的索引位置index的合法性做检查
 </span><span style="color:#177500"></span>    <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">);</span>
     <span style="color:#177500">// 指定集合的大小为0，则直接返回false
@@ -1855,9 +1391,7 @@ get、set、add、remove。
     <span style="color:#000">size</span> <span style="color:#000">+=</span> <span style="color:#000">cSize</span><span style="color:#000">;</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">true</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="113-public-iteratore-iterator">
         1.13 public Iterator<!-- raw HTML omitted --> iterator()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#113-public-iteratore-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.13 public Iterator iterator()" href="#113-public-iteratore-iterator">
@@ -1866,21 +1400,11 @@ get、set、add、remove。
     </h3>
 </div><p>获取一个迭代器，调用父列表的<code>listIterator</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">iterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">Iterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">iterator</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 调用父列表的listIterator()方法
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">listIterator</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="114-public-listiteratore-listiteratorfinal-int-index">
         1.14 public ListIterator<!-- raw HTML omitted --> listIterator(final int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#114-public-listiteratore-listiteratorfinal-int-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.14 public ListIterator listIterator(final int index)" href="#114-public-listiteratore-listiteratorfinal-int-index">
@@ -1889,69 +1413,7 @@ get、set、add、remove。
     </h3>
 </div><p>获取一个从指定索引位置开始的列表迭代器。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#a90d91">final</span> <span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">ListIterator</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">listIterator</span><span style="color:#000">(</span><span style="color:#a90d91">final</span> <span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#177500">// 进行并发修改检查
 </span><span style="color:#177500"></span>    <span style="color:#000">checkForComodification</span><span style="color:#000">();</span>
     <span style="color:#177500">// 指定索引的合法性检查
@@ -2009,9 +1471,7 @@ get、set、add、remove。
         <span style="color:#000">}</span>
     <span style="color:#000">};</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="115-public-liste-sublistint-fromindex-int-toindex">
         1.15 public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#115-public-liste-sublistint-fromindex-int-toindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.15 public List subList(int fromIndex, int toIndex)" href="#115-public-liste-sublistint-fromindex-int-toindex">
@@ -2020,19 +1480,10 @@ get、set、add、remove。
     </h3>
 </div><p>返回一个当前类的实例，新实例基于当前子列表。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">new</span> <span style="color:#000">SubList</span><span style="color:#000">&lt;&gt;(</span><span style="color:#a90d91">this</span><span style="color:#000">,</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="116-private-void-rangecheckint-index">
         1.16 private void rangeCheck(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#116-private-void-rangecheckint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.16 private void rangeCheck(int index)" href="#116-private-void-rangecheckint-index">
@@ -2041,21 +1492,11 @@ get、set、add、remove。
     </h3>
 </div><p>范围检查，检查指定的索引是否会造成数组下标越界。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheck</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheck</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">index</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span> <span style="color:#000">||</span> <span style="color:#000">index</span> <span style="color:#000">&gt;=</span> <span style="color:#000">size</span><span style="color:#000">)</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">IndexOutOfBoundsException</span><span style="color:#000">(</span><span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">));</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="117-private-void-rangecheckforaddint-index">
         1.17 private void rangeCheckForAdd(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#117-private-void-rangecheckforaddint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.17 private void rangeCheckForAdd(int index)" href="#117-private-void-rangecheckforaddint-index">
@@ -2064,21 +1505,11 @@ get、set、add、remove。
     </h3>
 </div><p>新插入元素前对元素插入位置的校验，与<code>rangeCheck</code>类似，不同的是：<code>rangeCheck</code>校验的是<code>index</code>是否小于0或大于等于<code>size</code>，而<code>rangeCheckForAdd</code>校验的是<code>index</code>是否小于0或大于<code>size</code>，因为新增的时候可以在<code>index</code>为<code>size</code>的位置插入元素（也即在列表的末尾插入元素）。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">rangeCheckForAdd</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#000">index</span> <span style="color:#000">&lt;</span> <span style="color:#000">0</span> <span style="color:#000">||</span> <span style="color:#000">index</span> <span style="color:#000">&gt;</span> <span style="color:#000">size</span><span style="color:#000">)</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">IndexOutOfBoundsException</span><span style="color:#000">(</span><span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#000">index</span><span style="color:#000">));</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="118-private-string-outofboundsmsgint-index">
         1.18 private String outOfBoundsMsg(int index)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#118-private-string-outofboundsmsgint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.18 private String outOfBoundsMsg(int index)" href="#118-private-string-outofboundsmsgint-index">
@@ -2087,19 +1518,10 @@ get、set、add、remove。
     </h3>
 </div><p>整理索引越界时的提示信息，<code>&quot;Index: &quot;+index+&quot;, Size: &quot;+size</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#000">String</span> <span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#000">String</span> <span style="color:#000">outOfBoundsMsg</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">index</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#c41a16">&#34;Index: &#34;</span><span style="color:#000">+</span><span style="color:#000">index</span><span style="color:#000">+</span><span style="color:#c41a16">&#34;, Size: &#34;</span><span style="color:#000">+</span><span style="color:#000">size</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="119-private-void-checkforcomodification">
         1.19 private void checkForComodification()
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#119-private-void-checkforcomodification" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1.19 private void checkForComodification()" href="#119-private-void-checkforcomodification">
@@ -2108,21 +1530,11 @@ get、set、add、remove。
     </h3>
 </div><p>判断是否存在并发修改，判断依据是，当前列表的更新量<code>modCount</code>和其父列表的更新量<code>modCount</code>是否一致，不一致则抛出<code>ConcurrentModificationException</code>。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">checkForComodification</span><span style="color:#000">()</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">private</span> <span style="color:#a90d91">void</span> <span style="color:#000">checkForComodification</span><span style="color:#000">()</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">if</span> <span style="color:#000">(</span><span style="color:#a90d91">this</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span> <span style="color:#000">!=</span> <span style="color:#000">l</span><span style="color:#000">.</span><span style="color:#836c28">modCount</span><span style="color:#000">)</span>
         <span style="color:#a90d91">throw</span> <span style="color:#a90d91">new</span> <span style="color:#000">ConcurrentModificationException</span><span style="color:#000">();</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h2 id="2-class-randomaccesssubliste-extends-subliste-implements-randomaccess">
         2. class RandomAccessSubList<!-- raw HTML omitted --> extends SubList<!-- raw HTML omitted --> implements RandomAccess
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#2-class-randomaccesssubliste-extends-subliste-implements-randomaccess" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. class RandomAccessSubList extends SubList implements RandomAccess" href="#2-class-randomaccesssubliste-extends-subliste-implements-randomaccess">
@@ -2139,19 +1551,10 @@ get、set、add、remove。
     </h3>
 </div><p>构造方法，调用父类<code>SubList</code>的构造方法。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">RandomAccessSubList</span><span style="color:#000">(</span><span style="color:#000">AbstractList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#000">RandomAccessSubList</span><span style="color:#000">(</span><span style="color:#000">AbstractList</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">list</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">super</span><span style="color:#000">(</span><span style="color:#000">list</span><span style="color:#000">,</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class="gdoc-page__anchorwrap">
+</code></pre></div><div class="gdoc-page__anchorwrap">
     <h3 id="22-public-liste-sublistint-fromindex-int-toindex">
         2.2 public List<!-- raw HTML omitted --> subList(int fromIndex, int toIndex)
         <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractList/#22-public-liste-sublistint-fromindex-int-toindex" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2.2 public List subList(int fromIndex, int toIndex)" href="#22-public-liste-sublistint-fromindex-int-toindex">
@@ -2160,19 +1563,10 @@ get、set、add、remove。
     </h3>
 </div><p>返回一个基于当前列表的新<code>RandomAccessSubList</code>实例。</p>
 <p>源码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">public</span> <span style="color:#000">List</span><span style="color:#000">&lt;</span><span style="color:#000">E</span><span style="color:#000">&gt;</span> <span style="color:#000">subList</span><span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#a90d91">int</span> <span style="color:#000">toIndex</span><span style="color:#000">)</span> <span style="color:#000">{</span>
     <span style="color:#a90d91">return</span> <span style="color:#a90d91">new</span> <span style="color:#000">RandomAccessSubList</span><span style="color:#000">&lt;&gt;(</span><span style="color:#a90d91">this</span><span style="color:#000">,</span> <span style="color:#000">fromIndex</span><span style="color:#000">,</span> <span style="color:#000">toIndex</span><span style="color:#000">);</span>
 <span style="color:#000">}</span>
-</code></pre></td></tr></table>
-</div>
-</div>
+</code></pre></div>
 
     </article>
 

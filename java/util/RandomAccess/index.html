@@ -14,8 +14,8 @@
 当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
 公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
 循环1：
-1 2  for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i);   循环2：
-1 2  for (Iterator i=list.iterator(); i.hasNext(); ) i.next();   该接口也是Java集合框架成员。">
+for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i); 循环2：
+for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集合框架成员。">
 
 
 
@@ -532,28 +532,12 @@
 <p>当用于操纵随机访问列表（例如<code>ArrayList</code>）的最佳算法应用于顺序访问列表（例如<code>LinkedList</code>）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过<code>instanceof</code>判断），并在必要时更改其行为以确保可接受的性能。</p>
 <p>公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些<code>List</code>实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的<code>List</code>实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时<code>List</code>实现应实现此接口：</p>
 <p>循环1：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
 		<span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">i</span><span style="color:#000">);</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>循环2：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
+</code></pre></div><p>循环2：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
 		<span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>该接口也是Java集合框架成员。</p>
+</code></pre></div><p>该接口也是Java集合框架成员。</p>
 
 
     </article>
