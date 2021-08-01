@@ -523,7 +523,8 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>AbstractList</h1>
-        
+        <hr>
+
 
 
   <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
@@ -610,6 +611,7 @@
 </div>
 
 
+<hr>
 <p>此类提供<code>List</code>接口的基本实现，以最大程度地减少实现支持“随机访问”数据存储（例如数组）所需的工作。对于顺序访问数据（例如链表），应优先使用<code>AbstractSequentialList</code>类。</p>
 <p>要实现不可修改的列表，编程者仅需扩展此类并为<code>get</code>和<code>List</code>的<code>size</code>方法提供实现。</p>
 <p>要实现可修改的列表，编程者必须另外重写<code>set</code>方法（否则将抛出<code>UnsupportedOperationException</code>）。如果列表是可变大小的，则程序员必须另外重写<code>add</code>和<code>remove</code>方法。</p>

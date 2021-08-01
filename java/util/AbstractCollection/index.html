@@ -523,7 +523,8 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>AbstractCollection</h1>
-        
+        <hr>
+
 
 
   <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
@@ -556,6 +557,7 @@
 </div>
 
 
+<hr>
 <p>此类提供了<code>Collection</code>接口的基本实现，以最大程度地减少实现此接口所需的工作。</p>
 <p>要实现一个不可修改的集合，编程者只需扩展此类并为<code>iterator</code>和<code>size</code>方法提供实现。 （<code>iterator</code>方法返回的迭代器必须实现<code>hasNext</code>和<code>next</code>。）</p>
 <p>要实现一个可修改的集合，编程者必须另外重写此类的<code>add</code>方法（否则将抛出<code>UnsupportedOperationException</code>），并且<code>iterator</code>方法返回的迭代器必须另外实现其<code>remove</code>方法。</p>

@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="1. boolean hasNext(); 2. E next(); 3. boolean hasPrevious(); 4. E previous(); 5. int nextIndex(); 6. int previousIndex(); 7. void remove(); 8. void set(E e); 9. void add(E e);    列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n&#43;1个可能的光标位置，如下面的插入符号（^）所示：
+    <meta name="description" content="1. boolean hasNext(); 2. E next(); 3. boolean hasPrevious(); 4. E previous(); 5. int nextIndex(); 6. int previousIndex(); 7. void remove(); 8. void set(E e); 9. void add(E e);     列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。ListIterator不持有当前元素，它的游标位置始终位于previous()返回的元素与next()返回的元素之间。 长度为n列表的迭代器具有n&#43;1个可能的光标位置，如下面的插入符号（^）所示：
  Element(0) Element(1) Element(2) ... Element(n-1) cursor positions: ^ ^ ^ ^ ^ 注意remove()和set(E e)方法不是根据光标位置定义的。它们被定义为对调用next()或previous()返回的最后一个元素进行操作。 该接口也是Java集合框架的成员接口。它继承于Iterator。
 注：下文中提到的“前”和“后”定义为：
  前：索引增大的方向 后：索引减小的方向  1. boolean hasNext();    当按照前进的方向遍历一个数组时，如果当前列表迭代器还有其他元素时返回true。（换句话说，如果next()方法能返回一个元素而非抛出一个异常，则返回true）
@@ -527,7 +527,8 @@
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
         <h1>ListIterator</h1>
-        
+        <hr>
+
 
 
   <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
@@ -551,6 +552,7 @@
 </div>
 
 
+<hr>
 <p>列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。<code>ListIterator</code>不持有当前元素，它的游标位置始终位于<code>previous()</code>返回的元素与<code>next()</code>返回的元素之间。 长度为<code>n</code>列表的迭代器具有<code>n+1</code>个可能的光标位置，如下面的插入符号（<code>^</code>）所示：</p>
 <pre><code>                     Element(0)   Element(1)   Element(2)   ... Element(n-1)
 cursor positions:  ^            ^            ^            ^                  ^
