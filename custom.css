@@ -4,10 +4,17 @@
 }
 
 /* 定制化行内代码样式 */
-.gdoc-markdown code {
+.gdoc-markdown p code {
     /* 设置颜色 */
     color: #FF6A6A;
     /* 设置字体加粗 */
     font-weight: bold;
 }
 
+/* 定制化表格内代码样式 */
+.gdoc-markdown table code {
+    /* 设置颜色 */
+    color: #FF6A6A;
+    /* 设置字体加粗 */
+    font-weight: bold;
+}
