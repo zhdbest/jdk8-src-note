@@ -299,6 +299,68 @@
 
             
             <span class="flex">
+                <svg class="icon abstractClass"><use xlink:href="#abstractClass"></use></svg>
+                <a href="/jdk8-src-note/java/util/AbstractSequentialList/"
+                    class="gdoc-nav__entry ">
+                    AbstractSequentialList
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/ArrayList/"
+                    class="gdoc-nav__entry ">
+                    ArrayList
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Collection/"
                     class="gdoc-nav__entry ">
@@ -331,9 +393,71 @@
             
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
+                <a href="/jdk8-src-note/java/util/Deque/"
+                    class="gdoc-nav__entry ">
+                    Deque
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Iterator/"
                     class="gdoc-nav__entry ">
                     Iterator
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/LinkedList/"
+                    class="gdoc-nav__entry ">
+                    LinkedList
                 </a>
             </span>
             
@@ -424,9 +548,71 @@
             
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
+                <a href="/jdk8-src-note/java/util/Queue/"
+                    class="gdoc-nav__entry ">
+                    Queue
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
                     class="gdoc-nav__entry ">
                     RandomAccess
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/Vector/"
+                    class="gdoc-nav__entry ">
+                    Vector
                 </a>
             </span>
             
@@ -554,7 +740,7 @@
 
 <hr>
 <p>列表的迭代器，允许编程者在任一方向上遍历列表，在迭代过程中修改列表，并获取迭代器在列表中的当前位置。<code>ListIterator</code>不持有当前元素，它的游标位置始终位于<code>previous()</code>返回的元素与<code>next()</code>返回的元素之间。 长度为<code>n</code>列表的迭代器具有<code>n+1</code>个可能的光标位置，如下面的插入符号（<code>^</code>）所示：</p>
-<pre><code>                     Element(0)   Element(1)   Element(2)   ... Element(n-1)
+<pre tabindex="0"><code>                     Element(0)   Element(1)   Element(2)   ... Element(n-1)
 cursor positions:  ^            ^            ^            ^                  ^
 </code></pre><p>注意<code>remove()</code>和<code>set(E e)</code>方法不是根据光标位置定义的。它们被定义为对调用<code>next()</code>或<code>previous()</code>返回的最后一个元素进行操作。 该接口也是Java集合框架的成员接口。它继承于<code>Iterator</code>。</p>
 <p>注：下文中提到的“前”和“后”定义为：</p>
@@ -804,6 +990,82 @@ cursor positions:  ^            ^            ^            ^                  ^
             
 
             
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
                 
                 
             
@@ -826,6 +1088,44 @@ cursor positions:  ^            ^            ^            ^                  ^
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
@@ -857,7 +1157,7 @@ cursor positions:  ^            ^            ^            ^                  ^
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/RandomAccess/" title="RandomAccess">RandomAccess </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/Queue/" title="Queue">Queue </a>
             
         </span>
     

@@ -10,16 +10,11 @@
 
 
 
-    <meta name="description" content="List 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。
-当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
-公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
-循环1：
-for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i); 循环2：
-for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集合框架成员。">
+    <meta name="description" content="1. void addFirst(E e) 2. void addLast(E e) 3. boolean offerFirst(E e) 4. boolean offerLast(E e) 5. E removeFirst() 6. E removeLast() 7. E pollFirst() 8. E pollLast() 9. E getFirst() 10. E getLast() 11. E peekFirst() 12. E peekLast() 13. boolean removeFirstOccurrence(Object o) 14. boolean removeLastOccurrence(Object o) 15. boolean add(E e) 16. boolean offer(E e) 17. E remove() 18. E poll() 19. E element() 20. E peek() 21.">
 
 
 
-    <title>RandomAccess | JDK8源码阅读笔记</title>
+    <title>Deque | JDK8源码阅读笔记</title>
 
     <link rel="icon" href="/jdk8-src-note/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -395,7 +390,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Deque/"
-                    class="gdoc-nav__entry ">
+                    class="gdoc-nav__entry is-active">
                     Deque
                 </a>
             </span>
@@ -581,7 +576,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
-                    class="gdoc-nav__entry is-active">
+                    class="gdoc-nav__entry ">
                     RandomAccess
                 </a>
             </span>
@@ -696,7 +691,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>RandomAccess</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Deque</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -713,18 +708,413 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>RandomAccess</h1>
+        <h1>Deque</h1>
         <hr>
-<p><code>List</code> 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。</p>
-<p>当用于操纵随机访问列表（例如<code>ArrayList</code>）的最佳算法应用于顺序访问列表（例如<code>LinkedList</code>）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过<code>instanceof</code>判断），并在必要时更改其行为以确保可接受的性能。</p>
-<p>公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些<code>List</code>实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的<code>List</code>实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时<code>List</code>实现应实现此接口：</p>
-<p>循环1：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
-		<span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">i</span><span style="color:#000">);</span>
-</code></pre></div><p>循环2：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
-		<span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
-</code></pre></div><p>该接口也是Java集合框架成员。</p>
+
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-void-addfirste-e">1. void addFirst(E e)</a></li>
+    <li><a href="#2-void-addlaste-e">2. void addLast(E e)</a></li>
+    <li><a href="#3-boolean-offerfirste-e">3. boolean offerFirst(E e)</a></li>
+    <li><a href="#4-boolean-offerlaste-e">4. boolean offerLast(E e)</a></li>
+    <li><a href="#5-e-removefirst">5. E removeFirst()</a></li>
+    <li><a href="#6-e-removelast">6. E removeLast()</a></li>
+    <li><a href="#7-e-pollfirst">7. E pollFirst()</a></li>
+    <li><a href="#8-e-polllast">8. E pollLast()</a></li>
+    <li><a href="#9-e-getfirst">9. E getFirst()</a></li>
+    <li><a href="#10-e-getlast">10. E getLast()</a></li>
+    <li><a href="#11-e-peekfirst">11. E peekFirst()</a></li>
+    <li><a href="#12-e-peeklast">12. E peekLast()</a></li>
+    <li><a href="#13-boolean-removefirstoccurrenceobject-o">13. boolean removeFirstOccurrence(Object o)</a></li>
+    <li><a href="#14-boolean-removelastoccurrenceobject-o">14. boolean removeLastOccurrence(Object o)</a></li>
+    <li><a href="#15-boolean-adde-e">15. boolean add(E e)</a></li>
+    <li><a href="#16-boolean-offere-e">16. boolean offer(E e)</a></li>
+    <li><a href="#17-e-remove">17. E remove()</a></li>
+    <li><a href="#18-e-poll">18. E poll()</a></li>
+    <li><a href="#19-e-element">19. E element()</a></li>
+    <li><a href="#20-e-peek">20. E peek()</a></li>
+    <li><a href="#21-void-pushe-e">21. void push(E e)</a></li>
+    <li><a href="#22-e-pop">22. E pop()</a></li>
+    <li><a href="#23-boolean-removeobject-o">23. boolean remove(Object o)</a></li>
+    <li><a href="#24-boolean-containsobject-o">24. boolean contains(Object o)</a></li>
+    <li><a href="#25-public-int-size">25. public int size()</a></li>
+    <li><a href="#26-iteratorlte-iterator">26. Iterator&lt;E&gt; iterator()</a></li>
+    <li><a href="#27-iteratorlte-descendingiterator">27. Iterator&lt;E&gt; descendingIterator()</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/09/Deque.png' width='30%' alt=''>
+</div>
+
+
+<hr>
+<p>支持在两端插入和删除元素的线性集合。名称deque是“double ended queue”的缩写，通常发音为“ deck”。大多数<code>Deque</code>实现对它们可能包含的元素数量没有固定的限制，但是此接口支持容量受限的双端队列以及没有固定大小限制的双端队列。</p>
+<p>该接口定义了访问双端队列两端元素的方法。提供了用于插入，删除和检查元素的方法。这些方法均以两种形式存在：一种在操作失败时引发异常，另一种返回特殊值（<code>null</code>或<code>false</code>，具体取决于操作）。后一种形式的插入操作是专为容量受限的<code>Deque</code>实现而设计的；在大多数实现中，插入操作不会失败。</p>
+<p>下表总结了上述十二种方法：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>抛出异常（头元素）</th>
+<th>返回特殊值（头元素）</th>
+<th>抛出异常（末尾元素）</th>
+<th>返回特殊值（末尾元素）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入</td>
+<td><code>addFirst(e)</code></td>
+<td><code>offerFirst(e)</code></td>
+<td><code>addLast(e)</code></td>
+<td><code>offerLast(e)</code></td>
+</tr>
+<tr>
+<td>删除</td>
+<td><code>removeFirst()</code></td>
+<td><code>pollFirst()</code></td>
+<td><code>removeLast()</code></td>
+<td><code>pollLast()</code></td>
+</tr>
+<tr>
+<td>检索</td>
+<td><code>getFirst()</code></td>
+<td><code>peekFirst()</code></td>
+<td><code>getLast()</code></td>
+<td><code>peekLast()</code></td>
+</tr>
+</tbody>
+</table>
+<p>此接口扩展了<code>Queue</code>接口。当将双端队列当作队列使用时，将导致FIFO（先进先出）行为。元素在双端队列的末尾添加，并从开头删除。如下表所示，从<code>Queue</code>接口继承的方法与<code>Deque</code>方法完全等效：</p>
+<table>
+<thead>
+<tr>
+<th><code>Queue</code>方法</th>
+<th>等效的<code>Deque</code>方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>add(e)</code></td>
+<td><code>addLast(e)</code></td>
+</tr>
+<tr>
+<td><code>offer(e)</code></td>
+<td><code>offerLast(e)</code></td>
+</tr>
+<tr>
+<td><code>remove()</code></td>
+<td><code>removeFirst()</code></td>
+</tr>
+<tr>
+<td><code>poll()</code></td>
+<td><code>pollFirst()</code></td>
+</tr>
+<tr>
+<td><code>element()</code></td>
+<td><code>getFirst()</code></td>
+</tr>
+<tr>
+<td><code>peek()</code></td>
+<td><code>peekFirst()</code></td>
+</tr>
+</tbody>
+</table>
+<p>双端队列也可以用作LIFO（后进先出）堆栈。此接口应优先于旧式<code>Stack</code>类使用。当双端队列用作堆栈时，元素从双端队列的开头被压入以及弹出。堆栈方法完全等同于Deque方法，如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>Stack方法</th>
+<th>等效的Deque方法</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>push(e)</code></td>
+<td><code>addFirst(e)</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>pop()</code></td>
+<td><code>removeFirst()</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>peek()</code></td>
+<td><code>peekFirst()</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>注意，当双端队列用作队列或堆栈时，<code>peek</code>方法同样有效。无论哪种情况，元素都是从双端队列的开头开始绘制的。</p>
+<p>该接口提供了两种删除内部元素的方法：<code>removeFirstOccurrence</code>和<code>removeLastOccurrence</code>。</p>
+<p>与<code>List</code>接口不同，此接口不支持对元素的索引访问。</p>
+<p>虽然并非严格要求<code>Deque</code>实现禁止插入空元素，但强烈建议这样做。强烈建议所有使用允许<code>null</code>元素的<code>Deque</code>实现的用户不要插入<code>null</code>。之所以如此，是因为各种方法都将<code>null</code>用作特殊的返回值，以指示双端队列为空。</p>
+<p><code>Deque</code>实现通常不定义基于元素的<code>equals</code>和<code>hashCode</code>方法，而是从类<code>Object</code>继承基于身份的版本。</p>
+<p>该接口也是Java集合框架的成员。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="1-void-addfirste-e">
+        1. void addFirst(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#1-void-addfirste-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1. void addFirst(E e)" href="#1-void-addfirste-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果可以在不违反容量限制的情况下立即执行此操作，则将指定的元素插入此双端队列的前面，如果当前没有可用空间，则抛出<code>IllegalStateException</code>。使用有容量限制的双端队列时，通常最好使用方法<code>offerFirst</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="2-void-addlaste-e">
+        2. void addLast(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#2-void-addlaste-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. void addLast(E e)" href="#2-void-addlaste-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果可以在不违反容量限制的情况下立即执行此操作，则将指定的元素插入此双端队列的后面，如果当前没有可用空间，则抛出<code>IllegalStateException</code>。使用有容量限制的双端队列时，通常最好使用方法<code>offerLast</code>。</p>
+<p>此方法等效于<code>add</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="3-boolean-offerfirste-e">
+        3. boolean offerFirst(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#3-boolean-offerfirste-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 3. boolean offerFirst(E e)" href="#3-boolean-offerfirste-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>将指定的元素插入此双端队列的前面，除非该操作违反容量限制。使用容量受限的双端队列时，此方法通常比<code>addFirst</code>方法更可取，后者只能通过引发异常才能不插入元素。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="4-boolean-offerlaste-e">
+        4. boolean offerLast(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#4-boolean-offerlaste-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 4. boolean offerLast(E e)" href="#4-boolean-offerlaste-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>将指定的元素插入此双端队列的后面，除非该操作违反容量限制。使用容量受限的双端队列时，此方法通常比<code>addLast</code>方法更可取，后者只能通过引发异常才能不插入元素。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="5-e-removefirst">
+        5. E removeFirst()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#5-e-removefirst" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 5. E removeFirst()" href="#5-e-removefirst">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列的第一个元素。此方法与<code>pollFirst</code>的不同之处仅在于，如果此双端队列为空，则它将引发异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="6-e-removelast">
+        6. E removeLast()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#6-e-removelast" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 6. E removeLast()" href="#6-e-removelast">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列的最后一个元素。此方法与<code>pollLast</code>的不同之处仅在于，如果此双端队列为空，则它将引发异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="7-e-pollfirst">
+        7. E pollFirst()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#7-e-pollfirst" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. E pollFirst()" href="#7-e-pollfirst">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列的第一个元素，如果此双端队列为空，则返回<code>null</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="8-e-polllast">
+        8. E pollLast()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#8-e-polllast" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 8. E pollLast()" href="#8-e-polllast">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列的最后一个元素，如果此双端队列为空，则返回<code>null</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="9-e-getfirst">
+        9. E getFirst()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#9-e-getfirst" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 9. E getFirst()" href="#9-e-getfirst">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列的第一个元素。</p>
+<p>该方法与<code>peekFirst</code>的不同之处仅在于当双端队列为空时本方法将抛出异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="10-e-getlast">
+        10. E getLast()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#10-e-getlast" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 10. E getLast()" href="#10-e-getlast">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列的最后一个元素。</p>
+<p>该方法与<code>peekLast</code>的不同之处仅在于当双端队列为空时本方法将抛出异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="11-e-peekfirst">
+        11. E peekFirst()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#11-e-peekfirst" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 11. E peekFirst()" href="#11-e-peekfirst">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列的第一个元素，或者如果当前双端队列为空的话，则返回<code>null</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="12-e-peeklast">
+        12. E peekLast()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#12-e-peeklast" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 12. E peekLast()" href="#12-e-peeklast">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列的最后一个元素，或者如果当前双端队列为空的话，则返回<code>null</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="13-boolean-removefirstoccurrenceobject-o">
+        13. boolean removeFirstOccurrence(Object o)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#13-boolean-removefirstoccurrenceobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 13. boolean removeFirstOccurrence(Object o)" href="#13-boolean-removefirstoccurrenceobject-o">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>从此双端队列中删除指定元素的第一次出现。如果双端队列不包含元素，则它保持不变。更准确地讲，删除第一个满足<code>(o==null ? e==null : o.equals(e))</code>的元素<code>e</code>（如果存在这样的元素）。</p>
+<p>如果此双端队列包含指定的元素（或者等效地，如果此双端队列由于调用该方法而更改），则返回<code>true</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="14-boolean-removelastoccurrenceobject-o">
+        14. boolean removeLastOccurrence(Object o)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#14-boolean-removelastoccurrenceobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 14. boolean removeLastOccurrence(Object o)" href="#14-boolean-removelastoccurrenceobject-o">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>从此双端队列中删除指定元素的最后一次出现。如果双端队列不包含元素，则它保持不变。更准确地讲，删除最后一个满足<code>(o==null ? e==null : o.equals(e))</code>的元素<code>e</code>（如果存在这样的元素）。</p>
+<p>如果此双端队列包含指定的元素（或者等效地，如果此双端队列由于调用该方法而更改），则返回<code>true</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="15-boolean-adde-e">
+        15. boolean add(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#15-boolean-adde-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 15. boolean add(E e)" href="#15-boolean-adde-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果可能的话立即将指定的元素插入此双端队列所表示的队列中（换句话说，插入到此双端队列的末尾），而不会违反容量限制，则在成功后返回<code>true</code>，如果当前没有可用空间，则抛出一个<code>IllegalStateException</code>。使用容量受限的双端队列时，通常最好使用<code>offer</code>。</p>
+<p>该方法等效于<code>addLast</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="16-boolean-offere-e">
+        16. boolean offer(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#16-boolean-offere-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 16. boolean offer(E e)" href="#16-boolean-offere-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果可能的话立即将指定的元素插入此双端队列所表示的队列中（换句话说，插入到此双端队列的末尾），而不会违反容量限制，则在成功后返回<code>true</code>，如果当前没有可用空间，则返回false。使用容量受限的双端队列时，该方法通常好于使用<code>add</code>，因为<code>add</code>方法在触发容量上限后是抛出异常。</p>
+<p>该方法等效于<code>offerLast</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="17-e-remove">
+        17. E remove()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#17-e-remove" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 17. E remove()" href="#17-e-remove">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列所表示队列的头部（换句话说，此双端队列的第一个元素）。此方法与<code>poll</code>的不同之处仅在于，如果此双端队列为空，则它将引发异常。</p>
+<p>该方法等效于<code>removeFirst()</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="18-e-poll">
+        18. E poll()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#18-e-poll" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 18. E poll()" href="#18-e-poll">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此双端队列所表示队列的头部（换句话说，此双端队列的第一个元素），如果此双端队列为空，则返回<code>null</code>。</p>
+<p>该方法等效于<code>pollFirst()</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="19-e-element">
+        19. E element()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#19-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 19. E element()" href="#19-e-element">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列所表示队列的头部（换句话说，此双端队列的第一个元素）。此方法与<code>peek</code>的不同之处仅在于，如果此双端队列为空，则它将引发异常。</p>
+<p>该方法等效于<code>getFirst()</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="20-e-peek">
+        20. E peek()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#20-e-peek" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 20. E peek()" href="#20-e-peek">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此双端队列所表示队列的头部（换句话说，此双端队列的第一个元素），如果此双端队列为空，则返回<code>null</code>。</p>
+<p>该方法等效于<code>peekFirst()</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="21-void-pushe-e">
+        21. void push(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#21-void-pushe-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 21. void push(E e)" href="#21-void-pushe-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果不违反容量限制则立即将元素压入此双端队列表示的堆栈（换句话说，此双端队列的开头），如果当前没有可用空间，则抛出<code>IllegalStateException</code>。</p>
+<p>该方法等效于<code>addFirst</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="22-e-pop">
+        22. E pop()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#22-e-pop" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 22. E pop()" href="#22-e-pop">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>从此双端队列所表示的堆栈中弹出一个元素。换句话说，删除并返回此双端队列的第一个元素。</p>
+<p>该方法等效于<code>removeFirst()</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="23-boolean-removeobject-o">
+        23. boolean remove(Object o)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#23-boolean-removeobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 23. boolean remove(Object o)" href="#23-boolean-removeobject-o">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>从此双端队列删除指定元素的第一次出现。如果双端队列不包含此元素，则它保持不变。更正式地讲，删除第一个可以使得<code>(o==null ? e==null : o.equals(e))</code>的元素<code>e</code>（如果存在这样的元素）。如果此双端队列包含指定的元素（或者等效地，如果此双端队列由于调用而更改），则返回<code>true</code>。</p>
+<p>该方法等效于<code>removeFirstOccurrence(Object)</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="24-boolean-containsobject-o">
+        24. boolean contains(Object o)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#24-boolean-containsobject-o" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 24. boolean contains(Object o)" href="#24-boolean-containsobject-o">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果此双端队列包含指定的元素，则返回<code>true</code>。更正式地讲，当且仅当此双端队列至少包含一个元素<code>e</code>可以满足<code>(o==null ? e==null : o.equals(e))</code>时返回<code>true</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="25-public-int-size">
+        25. public int size()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#25-public-int-size" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 25. public int size()" href="#25-public-int-size">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>返回此双端队列中的元素数。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="26-iteratorlte-iterator">
+        26. Iterator&lt;E&gt; iterator()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#26-iteratorlte-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 26. Iterator&lt;E&gt; iterator()" href="#26-iteratorlte-iterator">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>以适当的顺序返回此双端队列中的元素的迭代器。元素将按照从前（头）到后（尾）的顺序返回。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="27-iteratorlte-descendingiterator">
+        27. Iterator&lt;E&gt; descendingIterator()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Deque/#27-iteratorlte-descendingiterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 27. Iterator&lt;E&gt; descendingIterator()" href="#27-iteratorlte-descendingiterator">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>以相反的顺序返回此双端队列中的元素的迭代器。元素将按从最后（尾）到第一个（头）的顺序返回。</p>
 
 
     </article>
@@ -895,120 +1285,6 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -1031,6 +1307,120 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
@@ -1057,12 +1447,12 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/Queue/" title="Queue"> Queue</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/Collection/" title="Collection"> Collection</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/Vector/" title="Vector">Vector </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/Iterator/" title="Iterator">Iterator </a>
             
         </span>
     

@@ -10,16 +10,17 @@
 
 
 
-    <meta name="description" content="List 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。
-当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
-公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
-循环1：
-for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i); 循环2：
-for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集合框架成员。">
+    <meta name="description" content="1. protected AbstractSequentialList() 2. public E get(int index) 3. public E set(int index, E element) 4. public void add(int index, E element) 5. public E remove(int index) 6. public boolean addAll(int index, Collection&lt;? extends E&gt; c) 7. public Iterator&lt;E&gt; iterator() 8. public abstract ListIterator&lt;E&gt; listIterator(int index);     此类提供List接口的基本实现，以减少实现支持“顺序访问”数据存储（例如链表）的该接口所需的工作。对于随机访问数据（例如数组），应优先使用AbstractList类。
+该类与AbstractList类相反，因为它在列表的列表迭代器的顶部实现了“随机访问”方法（get(int index)，set(int index, E element)，add(int index, E element)，remove(int index)），而不是相反。
+要实现一个列表，编程者仅需要扩展此类并为listIterator和size方法提供实现。对于不可修改的列表，编程者只需要实现列表迭代器的hasNext，next，hasPrevious，previous和index方法。
+对于可修改的列表，编程者应该另外实现列表迭代器的set方法。对于可变大小的列表，程序员应该另外实现列表迭代器的remove和add方法。
+根据Collection接口规范中的建议，编程者通常应提供一个void（无参数）和参数为Collection的构造函数。
+该接口是Java集合框架的成员接口。
+ 1. protected AbstractSequentialList()    唯一的构造函数。 （用于子类构造函数的调用，通常是隐式的。）">
 
 
 
-    <title>RandomAccess | JDK8源码阅读笔记</title>
+    <title>AbstractSequentialList | JDK8源码阅读笔记</title>
 
     <link rel="icon" href="/jdk8-src-note/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -302,7 +303,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon abstractClass"><use xlink:href="#abstractClass"></use></svg>
                 <a href="/jdk8-src-note/java/util/AbstractSequentialList/"
-                    class="gdoc-nav__entry ">
+                    class="gdoc-nav__entry is-active">
                     AbstractSequentialList
                 </a>
             </span>
@@ -581,7 +582,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
-                    class="gdoc-nav__entry is-active">
+                    class="gdoc-nav__entry ">
                     RandomAccess
                 </a>
             </span>
@@ -696,7 +697,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>RandomAccess</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>AbstractSequentialList</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -713,18 +714,120 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>RandomAccess</h1>
+        <h1>AbstractSequentialList</h1>
         <hr>
-<p><code>List</code> 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。</p>
-<p>当用于操纵随机访问列表（例如<code>ArrayList</code>）的最佳算法应用于顺序访问列表（例如<code>LinkedList</code>）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过<code>instanceof</code>判断），并在必要时更改其行为以确保可接受的性能。</p>
-<p>公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些<code>List</code>实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的<code>List</code>实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时<code>List</code>实现应实现此接口：</p>
-<p>循环1：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
-		<span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">i</span><span style="color:#000">);</span>
-</code></pre></div><p>循环2：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
-		<span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
-</code></pre></div><p>该接口也是Java集合框架成员。</p>
+
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-protected-abstractsequentiallist">1. protected AbstractSequentialList()</a></li>
+    <li><a href="#2-public-e-getint-index">2. public E get(int index)</a></li>
+    <li><a href="#3-public-e-setint-index-e-element">3. public E set(int index, E element)</a></li>
+    <li><a href="#4-public-void-addint-index-e-element">4. public void add(int index, E element)</a></li>
+    <li><a href="#5-public-e-removeint-index">5. public E remove(int index)</a></li>
+    <li><a href="#6-public-boolean-addallint-index-collection-extends-e-c">6. public boolean addAll(int index, Collection&lt;? extends E&gt; c)</a></li>
+    <li><a href="#7-public-iteratorlte-iterator">7. public Iterator&lt;E&gt; iterator()</a></li>
+    <li><a href="#8-public-abstract-listiteratorlte-listiteratorint-index">8. public abstract ListIterator&lt;E&gt; listIterator(int index);</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/09/AbstractSequentialList.png' width='50%' alt=''>
+</div>
+
+
+<hr>
+<p>此类提供<code>List</code>接口的基本实现，以减少实现支持“顺序访问”数据存储（例如链表）的该接口所需的工作。对于随机访问数据（例如数组），应优先使用<code>AbstractList</code>类。</p>
+<p>该类与<code>AbstractList</code>类相反，因为它在列表的列表迭代器的顶部实现了“随机访问”方法（<code>get(int index)</code>，<code>set(int index, E element)</code>，<code>add(int index, E element)</code>，<code>remove(int index)</code>），而不是相反。</p>
+<p>要实现一个列表，编程者仅需要扩展此类并为<code>listIterator</code>和<code>size</code>方法提供实现。对于不可修改的列表，编程者只需要实现列表迭代器的<code>hasNext</code>，<code>next</code>，<code>hasPrevious</code>，<code>previous</code>和<code>index</code>方法。</p>
+<p>对于可修改的列表，编程者应该另外实现列表迭代器的<code>set</code>方法。对于可变大小的列表，程序员应该另外实现列表迭代器的<code>remove</code>和<code>add</code>方法。</p>
+<p>根据<code>Collection</code>接口规范中的建议，编程者通常应提供一个<code>void</code>（无参数）和参数为<code>Collection</code>的构造函数。</p>
+<p>该接口是Java集合框架的成员接口。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="1-protected-abstractsequentiallist">
+        1. protected AbstractSequentialList()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#1-protected-abstractsequentiallist" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1. protected AbstractSequentialList()" href="#1-protected-abstractsequentiallist">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>唯一的构造函数。 （用于子类构造函数的调用，通常是隐式的。）</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="2-public-e-getint-index">
+        2. public E get(int index)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#2-public-e-getint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. public E get(int index)" href="#2-public-e-getint-index">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>返回此列表中指定位置的元素。</p>
+<p>此实现首先获取一个指向索引元素的列表迭代器（使用<code>listIterator(index)</code>）。然后，它使用<code>ListIterator.next</code>获取元素并返回它。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="3-public-e-setint-index-e-element">
+        3. public E set(int index, E element)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#3-public-e-setint-index-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 3. public E set(int index, E element)" href="#3-public-e-setint-index-e-element">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>用指定的元素替换此列表中指定位置的元素（可选操作）。</p>
+<p>此实现首先获取一个指向索引元素的列表迭代器（使用<code>listIterator(index)</code>）。然后，它使用<code>ListIterator.next</code>获取当前元素，并将其使用<code>ListIterator.set</code>替换。</p>
+<p>请注意，如果列表迭代器未实现<code>set</code>操作，则此实现将抛出<code>UnsupportedOperationException</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="4-public-void-addint-index-e-element">
+        4. public void add(int index, E element)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#4-public-void-addint-index-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 4. public void add(int index, E element)" href="#4-public-void-addint-index-e-element">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>将指定的元素插入此列表中的指定位置（可选操作）。将当前在该位置的元素（如果有）和任何后续元素右移（将其索引加一）。</p>
+<p>此实现首先获取一个指向指定索引元素的列表迭代器（使用<code>listIterator(index)</code>）。然后，它使用<code>ListIterator.add</code> 插入指定的元素。</p>
+<p>请注意，如果列表迭代器未实现<code>add</code>操作，则此实现将抛出<code>UnsupportedOperationException</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="5-public-e-removeint-index">
+        5. public E remove(int index)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#5-public-e-removeint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 5. public E remove(int index)" href="#5-public-e-removeint-index">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>删除此列表中指定位置的元素（可选操作）。将所有后续元素向左移动（将其索引减一）。返回从列表中删除的元素。</p>
+<p>此实现首先获取一个指向指定索引元素的列表迭代器（使用<code>listIterator(index)</code>）。然后，它使用<code>ListIterator.remove</code>删除该元素。</p>
+<p>请注意，如果列表迭代器未实现<code>remove</code>操作，则此实现将抛出<code>UnsupportedOperationException</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="6-public-boolean-addallint-index-collection-extends-e-c">
+        6. public boolean addAll(int index, Collection&lt;? extends E&gt; c)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#6-public-boolean-addallint-index-collection-extends-e-c" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 6. public boolean addAll(int index, Collection&lt;? extends E&gt; c)" href="#6-public-boolean-addallint-index-collection-extends-e-c">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>将指定集合中的所有元素插入此列表中的指定位置（可选操作）。将当前在该位置的元素（如果有）和任何后续元素右移（增加其索引）。新元素将按照指定集合的迭代器返回的顺序显示在此列表中。如果在操作进行过程中修改了指定的集合，则此操作的行为是不确定的。 （请注意，如果指定的集合是此列表，并且是非空的，则将发生这种情况。）</p>
+<p>此实现在指定集合上获得一个迭代器，并在此列表上获得一个指向指定索引元素的列表迭代器（使用<code>listIterator(index)</code>）。然后，遍历指定的集合，使用<code>ListIterator.next</code>（跳过已插入的元素）之后接着使用<code>ListIterator.add</code>，将从迭代器获得的元素一次插入到此列表中。</p>
+<p>请注意，如果<code>listIterator</code>方法返回的列表迭代器未实现<code>add</code>操作，则此实现将引发<code>UnsupportedOperationException</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="7-public-iteratorlte-iterator">
+        7. public Iterator&lt;E&gt; iterator()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#7-public-iteratorlte-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. public Iterator&lt;E&gt; iterator()" href="#7-public-iteratorlte-iterator">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>返回此列表中元素的迭代器（按适当顺序）。</p>
+<p>此实现仅返回列表上的列表迭代器。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="8-public-abstract-listiteratorlte-listiteratorint-index">
+        8. public abstract ListIterator&lt;E&gt; listIterator(int index);
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractSequentialList/#8-public-abstract-listiteratorlte-listiteratorint-index" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 8. public abstract ListIterator&lt;E&gt; listIterator(int index);" href="#8-public-abstract-listiteratorlte-listiteratorint-index">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>返回此列表中的元素的列表迭代器（按适当顺序）。</p>
 
 
     </article>
@@ -838,177 +941,6 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -1031,6 +963,177 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
@@ -1057,12 +1160,12 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/Queue/" title="Queue"> Queue</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/AbstractList/" title="AbstractList"> AbstractList</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/Vector/" title="Vector">Vector </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/ArrayList/" title="ArrayList">ArrayList </a>
             
         </span>
     

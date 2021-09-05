@@ -10,7 +10,7 @@
 
 
 
-    <meta name="description" content="1. protected AbstractCollection() 2. public abstract Iteratoriterator(); 3. public abstract int size(); 4. public boolean isEmpty() 5. public boolean contains(Object o) 6. public Object[] toArray() 7. public T[] toArray(T[] a) 8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 9. private static T[] finishToArray(T[] r, Iterator&lt;?&gt; it) 10. private static int hugeCapacity(int minCapacity) 11. public boolean add(E e) 12. public boolean remove(Object o) 13. public boolean containsAll(Collection&lt;?&gt; c) 14.">
+    <meta name="description" content="1. protected AbstractCollection() 2. public abstract Iterator&lt;E&gt; iterator(); 3. public abstract int size(); 4. public boolean isEmpty() 5. public boolean contains(Object o) 6. public Object[] toArray() 7. public &lt;T&gt; T[] toArray(T[] a) 8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 9. private static &lt;T&gt; T[] finishToArray(T[] r, Iterator&lt;?&gt; it) 10. private static int hugeCapacity(int minCapacity) 11. public boolean add(E e) 12. public boolean remove(Object o) 13. public boolean containsAll(Collection&lt;?">
 
 
 
@@ -295,6 +295,68 @@
 
             
             <span class="flex">
+                <svg class="icon abstractClass"><use xlink:href="#abstractClass"></use></svg>
+                <a href="/jdk8-src-note/java/util/AbstractSequentialList/"
+                    class="gdoc-nav__entry ">
+                    AbstractSequentialList
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/ArrayList/"
+                    class="gdoc-nav__entry ">
+                    ArrayList
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Collection/"
                     class="gdoc-nav__entry ">
@@ -327,9 +389,71 @@
             
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
+                <a href="/jdk8-src-note/java/util/Deque/"
+                    class="gdoc-nav__entry ">
+                    Deque
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Iterator/"
                     class="gdoc-nav__entry ">
                     Iterator
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/LinkedList/"
+                    class="gdoc-nav__entry ">
+                    LinkedList
                 </a>
             </span>
             
@@ -420,9 +544,71 @@
             
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
+                <a href="/jdk8-src-note/java/util/Queue/"
+                    class="gdoc-nav__entry ">
+                    Queue
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
                     class="gdoc-nav__entry ">
                     RandomAccess
+                </a>
+            </span>
+            
+        
+
+        
+    </li>
+
+
+    
+    
+
+    <li>
+        
+        
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+            
+            <span class="flex">
+                <svg class="icon class"><use xlink:href="#class"></use></svg>
+                <a href="/jdk8-src-note/java/util/Vector/"
+                    class="gdoc-nav__entry ">
+                    Vector
                 </a>
             </span>
             
@@ -530,14 +716,14 @@
   <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
   <ul>
     <li><a href="#1-protected-abstractcollection">1. protected AbstractCollection()</a></li>
-    <li><a href="#2-public-abstract-iteratore-iterator">2. public abstract Iterator<!-- raw HTML omitted --> iterator();</a></li>
+    <li><a href="#2-public-abstract-iteratorlte-iterator">2. public abstract Iterator&lt;E&gt; iterator();</a></li>
     <li><a href="#3-public-abstract-int-size">3. public abstract int size();</a></li>
     <li><a href="#4-public-boolean-isempty">4. public boolean isEmpty()</a></li>
     <li><a href="#5-public-boolean-containsobject-o">5. public boolean contains(Object o)</a></li>
     <li><a href="#6-public-object-toarray">6. public Object[] toArray()</a></li>
-    <li><a href="#7-public-t-t-toarrayt-a">7. public <!-- raw HTML omitted --> T[] toArray(T[] a)</a></li>
+    <li><a href="#7-public-ltt-t-toarrayt-a">7. public &lt;T&gt; T[] toArray(T[] a)</a></li>
     <li><a href="#8-private-static-final-int-max_array_size--integermax_value---8">8. private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;</a></li>
-    <li><a href="#9-private-static-t-t-finishtoarrayt-r-iterator-it">9. private static <!-- raw HTML omitted --> T[] finishToArray(T[] r, Iterator&lt;?&gt; it)</a></li>
+    <li><a href="#9-private-static-ltt-t-finishtoarrayt-r-iterator-it">9. private static &lt;T&gt; T[] finishToArray(T[] r, Iterator&lt;?&gt; it)</a></li>
     <li><a href="#10-private-static-int-hugecapacityint-mincapacity">10. private static int hugeCapacity(int minCapacity)</a></li>
     <li><a href="#11-public-boolean-adde-e">11. public boolean add(E e)</a></li>
     <li><a href="#12-public-boolean-removeobject-o">12. public boolean remove(Object o)</a></li>
@@ -576,9 +762,9 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">protected</span> <span style="color:#000">AbstractCollection</span><span style="color:#000">()</span> <span style="color:#000">{</span>
 <span style="color:#000">}</span>
 </code></pre></div><div class="gdoc-page__anchorwrap">
-    <h1 id="2-public-abstract-iteratore-iterator">
-        2. public abstract Iterator<!-- raw HTML omitted --> iterator();
-        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#2-public-abstract-iteratore-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. public abstract Iterator iterator();" href="#2-public-abstract-iteratore-iterator">
+    <h1 id="2-public-abstract-iteratorlte-iterator">
+        2. public abstract Iterator&lt;E&gt; iterator();
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#2-public-abstract-iteratorlte-iterator" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. public abstract Iterator&lt;E&gt; iterator();" href="#2-public-abstract-iteratorlte-iterator">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h1>
@@ -656,9 +842,9 @@
 </span><span style="color:#177500"></span>    <span style="color:#a90d91">return</span> <span style="color:#000">it</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">()</span> <span style="color:#000">?</span> <span style="color:#000">finishToArray</span><span style="color:#000">(</span><span style="color:#000">r</span><span style="color:#000">,</span> <span style="color:#000">it</span><span style="color:#000">)</span> <span style="color:#000">:</span> <span style="color:#000">r</span><span style="color:#000">;</span>
 <span style="color:#000">}</span>
 </code></pre></div><div class="gdoc-page__anchorwrap">
-    <h1 id="7-public-t-t-toarrayt-a">
-        7. public <!-- raw HTML omitted --> T[] toArray(T[] a)
-        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#7-public-t-t-toarrayt-a" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. public  T[] toArray(T[] a)" href="#7-public-t-t-toarrayt-a">
+    <h1 id="7-public-ltt-t-toarrayt-a">
+        7. public &lt;T&gt; T[] toArray(T[] a)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#7-public-ltt-t-toarrayt-a" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 7. public &lt;T&gt; T[] toArray(T[] a)" href="#7-public-ltt-t-toarrayt-a">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h1>
@@ -717,9 +903,9 @@
     </h1>
 </div><p>可分配的最大数组大小。一些虚拟机在数组中保留一些头字。尝试分配更大的数组可能会导致<code>OutOfMemoryError</code>：请求的数组大小超出虚拟机限制。</p>
 <div class="gdoc-page__anchorwrap">
-    <h1 id="9-private-static-t-t-finishtoarrayt-r-iterator-it">
-        9. private static <!-- raw HTML omitted --> T[] finishToArray(T[] r, Iterator&lt;?&gt; it)
-        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#9-private-static-t-t-finishtoarrayt-r-iterator-it" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 9. private static  T[] finishToArray(T[] r, Iterator&lt;?&gt; it)" href="#9-private-static-t-t-finishtoarrayt-r-iterator-it">
+    <h1 id="9-private-static-ltt-t-finishtoarrayt-r-iterator-it">
+        9. private static &lt;T&gt; T[] finishToArray(T[] r, Iterator&lt;?&gt; it)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/AbstractCollection/#9-private-static-ltt-t-finishtoarrayt-r-iterator-it" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 9. private static &lt;T&gt; T[] finishToArray(T[] r, Iterator&lt;?&gt; it)" href="#9-private-static-ltt-t-finishtoarrayt-r-iterator-it">
             <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
         </a>
     </h1>
@@ -1037,6 +1223,120 @@
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             

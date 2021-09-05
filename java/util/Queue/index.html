@@ -10,16 +10,21 @@
 
 
 
-    <meta name="description" content="List 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。
-当用于操纵随机访问列表（例如ArrayList）的最佳算法应用于顺序访问列表（例如LinkedList）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过instanceof判断），并在必要时更改其行为以确保可接受的性能。
-公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些List实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的List实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时List实现应实现此接口：
-循环1：
-for (int i=0, n=list.size(); i &lt; n; i&#43;&#43;) list.get(i); 循环2：
-for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集合框架成员。">
+    <meta name="description" content="1. boolean add(E e) 2. boolean offer(E e) 3. E remove() 4. E poll() 5. E element() 6. E peek()     设计用于在处理之前存放元素的集合。除了基本的Collection操作之外，队列还提供其他插入，提取和检查操作。这些方法均以两种形式存在：一种在操作失败时引发异常，另一种返回特殊值（null或false，具体取决于操作）。插入操作的后一种形式是专门为与有限容量的Queue实现一起使用而设计的；在大多数实现中，插入操作不会失败。
+Queue方法摘要：
+    抛出异常 返回特殊值     插入 add(e) offer(e)   删除 remove() poll()   检索 element() peek()    队列通常但不一定以FIFO（先进先出）的方式对元素进行排序。例外情况包括优先级队列（根据提供的比较器对元素进行排序或元素的自然排序）和LIFO（后进先出）队列（或堆栈）。无论使用哪种排序，队列的head都是通过调用remove()或poll()来删除的元素。在FIFO队列中，所有新元素都插入到队列的尾部。其他种类的队列可能使用不同的放置规则。每个Queue实现都必须指定其排序属性。
+offer方法在可能的情况下插入一个元素，否则返回false。这与Collection.add方法不同，该方法只能通过引发未经检查的异常来表示添加元素失败。offer方法被设计用于在正常情况下（而不是在例外情况下）发生故障（例如在固定容量（或“有界”）队列中）时使用。
+remove()和poll()方法删除并返回队列的开头（head）。确切地说，从队列中删除哪个元素是队列的排序策略决定的，不同实现的实现方法不同。remove()和poll()方法的区别仅在于队列为空时它们的行为：remove()方法引发异常，而poll()方法返回null。
+element()和peek()方法返回（但不删除）队列头（head）。
+Queue接口未定义在并发编程中常见的阻塞队列方法。这些等待元素出现或空间可用的方法在java.util.concurrent.BlockingQueue接口中进行了定义，该接口扩展了Queue接口。
+Queue实现通常不允许插入null元素，尽管某些实现（例如LinkedList）不禁止插入null。即使在允许的实现中，也不应将null插入Queue中，因为poll方法也将null用作特殊的返回值，以指示队列不包含任何元素。
+Queue实现通常不定义equals和hashCode方法基于元素的版本，而是从类Object继承基于身份的版本，因为基于元素的相等性并不总是明确定义对于具有相同元素但排序属性不同的队列。
+该接口也是Java集合框架的成员。
+ 1. boolean add(E e)    如果可以立即将指定的元素插入此队列，而不会违反容量限制，则在成功后返回true，如果当前没有可用空间，则抛出IllegalStateException。">
 
 
 
-    <title>RandomAccess | JDK8源码阅读笔记</title>
+    <title>Queue | JDK8源码阅读笔记</title>
 
     <link rel="icon" href="/jdk8-src-note/favicon/favicon-32x32.png" type="image/x-icon">
 
@@ -550,7 +555,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/Queue/"
-                    class="gdoc-nav__entry ">
+                    class="gdoc-nav__entry is-active">
                     Queue
                 </a>
             </span>
@@ -581,7 +586,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             <span class="flex">
                 <svg class="icon interface"><use xlink:href="#interface"></use></svg>
                 <a href="/jdk8-src-note/java/util/RandomAccess/"
-                    class="gdoc-nav__entry is-active">
+                    class="gdoc-nav__entry ">
                     RandomAccess
                 </a>
             </span>
@@ -696,7 +701,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
         
     
     
-        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>RandomAccess</span><meta itemprop='position' content='5' /></li>
+        <li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/' href='/jdk8-src-note/'><span itemprop='name'>JDK8源码阅读笔记</span></a><meta itemprop='position' content='2' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/' href='/jdk8-src-note/java/'><span itemprop='name'>java</span></a><meta itemprop='position' content='3' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><a itemscope itemtype='https://schema.org/WebPage' itemprop='item' itemid='/jdk8-src-note/java/util/' href='/jdk8-src-note/java/util/'><span itemprop='name'>util</span></a><meta itemprop='position' content='4' /></li><li> / </li><li itemprop='itemListElement' itemscope itemtype='https://schema.org/ListItem'><span itemprop='name'>Queue</span><meta itemprop='position' content='5' /></li>
     
 
     
@@ -713,18 +718,120 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
 
 
     <article class="gdoc-markdown gdoc-markdown__align--left">
-        <h1>RandomAccess</h1>
+        <h1>Queue</h1>
         <hr>
-<p><code>List</code> 接口的实现类所使用的标记接口，标识出它们支持快速（通常为恒定时间）随机访问。该接口的主要目的是允许通用算法更改其行为，以便在应用于随机访问或顺序访问列表时提供良好的性能。</p>
-<p>当用于操纵随机访问列表（例如<code>ArrayList</code>）的最佳算法应用于顺序访问列表（例如<code>LinkedList</code>）时，会产生二次行为。鼓励通用的列表算法在应用一种算法（如果将其应用于顺序访问列表时会产生较差的性能）之前，检查给定列表是否为此接口的实例（通过<code>instanceof</code>判断），并在必要时更改其行为以确保可接受的性能。</p>
-<p>公认的是，随机访问和顺序访问之间的区别通常是模糊的。例如，某些<code>List</code>实现会提供渐近线性的访问时间（如果它们变得很大），但实际上却是恒定的访问时间。这样的<code>List</code>实现通常应实现此接口。根据经验，对于类的典型实例，在以下场景下当循环1快于循环2时<code>List</code>实现应实现此接口：</p>
-<p>循环1：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#a90d91">int</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">0</span><span style="color:#000">,</span> <span style="color:#000">n</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">size</span><span style="color:#000">();</span> <span style="color:#000">i</span> <span style="color:#000">&lt;</span> <span style="color:#000">n</span><span style="color:#000">;</span> <span style="color:#000">i</span><span style="color:#000">++)</span>
-		<span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">get</span><span style="color:#000">(</span><span style="color:#000">i</span><span style="color:#000">);</span>
-</code></pre></div><p>循环2：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:2;-o-tab-size:2;tab-size:2"><code class="language-java" data-lang="java"><span style="color:#a90d91">for</span> <span style="color:#000">(</span><span style="color:#000">Iterator</span> <span style="color:#000">i</span><span style="color:#000">=</span><span style="color:#000">list</span><span style="color:#000">.</span><span style="color:#836c28">iterator</span><span style="color:#000">();</span> <span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">hasNext</span><span style="color:#000">();</span> <span style="color:#000">)</span>
-		<span style="color:#000">i</span><span style="color:#000">.</span><span style="color:#836c28">next</span><span style="color:#000">();</span>
-</code></pre></div><p>该接口也是Java集合框架成员。</p>
+
+
+
+  <div class="gdoc-toc gdoc-toc__level--6"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-boolean-adde-e">1. boolean add(E e)</a></li>
+    <li><a href="#2-boolean-offere-e">2. boolean offer(E e)</a></li>
+    <li><a href="#3-e-remove">3. E remove()</a></li>
+    <li><a href="#4-e-poll">4. E poll()</a></li>
+    <li><a href="#5-e-element">5. E element()</a></li>
+    <li><a href="#6-e-peek">6. E peek()</a></li>
+  </ul>
+</nav><hr></div>
+
+
+
+<div style='text-align: center'>
+    <img src='https://img.hongmao.run/blog/2021/09/Queue.png' width='30%' alt=''>
+</div>
+
+
+<hr>
+<p>设计用于在处理之前存放元素的集合。除了基本的<code>Collection</code>操作之外，队列还提供其他插入，提取和检查操作。这些方法均以两种形式存在：一种在操作失败时引发异常，另一种返回特殊值（<code>null</code>或<code>false</code>，具体取决于操作）。插入操作的后一种形式是专门为与有限容量的<code>Queue</code>实现一起使用而设计的；在大多数实现中，插入操作不会失败。</p>
+<p><code>Queue</code>方法摘要：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入</td>
+<td><code>add(e)</code></td>
+<td><code>offer(e)</code></td>
+</tr>
+<tr>
+<td>删除</td>
+<td><code>remove()</code></td>
+<td><code>poll()</code></td>
+</tr>
+<tr>
+<td>检索</td>
+<td><code>element()</code></td>
+<td><code>peek()</code></td>
+</tr>
+</tbody>
+</table>
+<p>队列通常但不一定以FIFO（先进先出）的方式对元素进行排序。例外情况包括优先级队列（根据提供的比较器对元素进行排序或元素的自然排序）和LIFO（后进先出）队列（或堆栈）。无论使用哪种排序，队列的head都是通过调用<code>remove()</code>或<code>poll()</code>来删除的元素。在FIFO队列中，所有新元素都插入到队列的尾部。其他种类的队列可能使用不同的放置规则。每个<code>Queue</code>实现都必须指定其排序属性。</p>
+<p><code>offer</code>方法在可能的情况下插入一个元素，否则返回<code>false</code>。这与<code>Collection.add</code>方法不同，该方法只能通过引发未经检查的异常来表示添加元素失败。<code>offer</code>方法被设计用于在正常情况下（而不是在例外情况下）发生故障（例如在固定容量（或“有界”）队列中）时使用。</p>
+<p><code>remove()</code>和<code>poll()</code>方法删除并返回队列的开头（head）。确切地说，从队列中删除哪个元素是队列的排序策略决定的，不同实现的实现方法不同。<code>remove()</code>和<code>poll()</code>方法的区别仅在于队列为空时它们的行为：<code>remove()</code>方法引发异常，而<code>poll()</code>方法返回<code>null</code>。</p>
+<p><code>element()</code>和<code>peek()</code>方法返回（但不删除）队列头（head）。</p>
+<p><code>Queue</code>接口未定义在并发编程中常见的阻塞队列方法。这些等待元素出现或空间可用的方法在<code>java.util.concurrent.BlockingQueue</code>接口中进行了定义，该接口扩展了<code>Queue</code>接口。</p>
+<p><code>Queue</code>实现通常不允许插入<code>null</code>元素，尽管某些实现（例如<code>LinkedList</code>）不禁止插入<code>null</code>。即使在允许的实现中，也不应将<code>null</code>插入<code>Queue</code>中，因为<code>poll</code>方法也将<code>null</code>用作特殊的返回值，以指示队列不包含任何元素。</p>
+<p><code>Queue</code>实现通常不定义<code>equals</code>和<code>hashCode</code>方法基于元素的版本，而是从类<code>Object</code>继承基于身份的版本，因为基于元素的相等性并不总是明确定义对于具有相同元素但排序属性不同的队列。</p>
+<p>该接口也是Java集合框架的成员。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="1-boolean-adde-e">
+        1. boolean add(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#1-boolean-adde-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 1. boolean add(E e)" href="#1-boolean-adde-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果可以立即将指定的元素插入此队列，而不会违反容量限制，则在成功后返回<code>true</code>，如果当前没有可用空间，则抛出<code>IllegalStateException</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="2-boolean-offere-e">
+        2. boolean offer(E e)
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#2-boolean-offere-e" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 2. boolean offer(E e)" href="#2-boolean-offere-e">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>如果不会违反容量限制可以立即将指定的元素插入此队列。当使用容量受限的队列时，此方法通常比<code>add</code>更可取，后者插入元素时只能通过引发异常来标识无法插入。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="3-e-remove">
+        3. E remove()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#3-e-remove" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 3. E remove()" href="#3-e-remove">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此队列的头。此方法与<code>poll</code>的不同之处仅在于，如果此队列为空，它将引发异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="4-e-poll">
+        4. E poll()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#4-e-poll" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 4. E poll()" href="#4-e-poll">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索并删除此队列的开头，如果此队列为空，则返回<code>null</code>。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="5-e-element">
+        5. E element()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#5-e-element" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 5. E element()" href="#5-e-element">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此队列的头。此方法与<code>peek</code>的不同之处仅在于，如果此队列为空，它将引发异常。</p>
+<hr>
+<div class="gdoc-page__anchorwrap">
+    <h1 id="6-e-peek">
+        6. E peek()
+        <a data-clipboard-text="https://hongmao.run/jdk8-src-note/java/util/Queue/#6-e-peek" class="gdoc-page__anchor gdoc-page__anchor--right clip" aria-label="Anchor 6. E peek()" href="#6-e-peek">
+            <svg class="icon gdoc_link"><use xlink:href="#gdoc_link"></use></svg>
+        </a>
+    </h1>
+</div><p>检索但不删除此队列的开头，如果此队列为空，则返回<code>null</code>。</p>
 
 
     </article>
@@ -990,25 +1097,6 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
 
             
-
-            
-        
-
-        
-        
-    
-        
-        
-
-        
-        
-            
-            
-            
-
-            
-
-            
                 
                 
             
@@ -1031,6 +1119,25 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
             
                 
                 
+            
+
+            
+
+            
+        
+
+        
+        
+    
+        
+        
+
+        
+        
+            
+            
+            
+
             
 
             
@@ -1057,12 +1164,12 @@ for (Iterator i=list.iterator(); i.hasNext(); ) i.next(); 该接口也是Java集
     
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/Queue/" title="Queue"> Queue</a>
+                <a class="gdoc-page__nav--prev flex align-center" href="/jdk8-src-note/java/util/ListIterator/" title="ListIterator"> ListIterator</a>
             
         </span>
         <span class="gdoc-page__nav">
             
-                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/Vector/" title="Vector">Vector </a>
+                <a class="gdoc-page__nav--next flex align-center" href="/jdk8-src-note/java/util/RandomAccess/" title="RandomAccess">RandomAccess </a>
             
         </span>
     

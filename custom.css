@@ -4,7 +4,7 @@
 }
 
 /* 定制化行内代码样式 */
-.gdoc-markdown p code {
+.gdoc-markdown code {
     /* 设置颜色 */
     color: #FF6A6A;
     /* 设置字体加粗 */
