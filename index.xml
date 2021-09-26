@@ -78,6 +78,15 @@ Queue实现通常不定义equals和hashCode方法基于元素的版本，而是�
     </item>
     
     <item>
+      <title>Map</title>
+      <link>https://hongmao.run/jdk8-src-note/java/util/Map/</link>
+      <pubDate>Sun, 22 Aug 2021 09:06:42 +0800</pubDate>
+      
+      <guid>https://hongmao.run/jdk8-src-note/java/util/Map/</guid>
+      <description>1. int size(); 2. boolean isEmpty(); 3. boolean containsKey(Object key); 4. boolean containsValue(Object value); 5. V get(Object key); 6. V put(K key, V value); 7. V remove(Object key); 8. void putAll(Map&amp;lt;? extends K, ? extends V&amp;gt; m); 9. void clear(); 10. Set&amp;lt;K&amp;gt; keySet(); 11. Collection&amp;lt;V&amp;gt; values(); 12. Set&amp;lt;Map.Entry&amp;lt;K, V&amp;raquo; entrySet(); 13. interface Entry&amp;lt;K,V&amp;gt;  13.1 K getKey(); 13.2 V getValue(); 13.3 V setValue(V value); 13.4 boolean equals(Object o); 13.</description>
+    </item>
+    
+    <item>
       <title>RandomAccess</title>
       <link>https://hongmao.run/jdk8-src-note/java/util/RandomAccess/</link>
       <pubDate>Sat, 31 Jul 2021 10:32:17 +0800</pubDate>
