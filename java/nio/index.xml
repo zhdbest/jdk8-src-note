@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nio on JDK8源码阅读笔记</title>
+    <link>https://hongmao.run/jdk8-src-note/java/nio/</link>
+    <description>Recent content in nio on JDK8源码阅读笔记</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 11 Jun 2024 08:24:39 +0800</lastBuildDate>
+    <atom:link href="https://hongmao.run/jdk8-src-note/java/nio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ByteOrder</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/ByteOrder/</link>
+      <pubDate>Tue, 11 Jun 2024 08:24:39 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/ByteOrder/</guid>
+      <description>字节顺序的类型安全枚举。&#xA;1. private String name; 2. public static final ByteOrder BIG_ENDIAN = new ByteOrder(&amp;ldquo;BIG_ENDIAN&amp;rdquo;); 3. public static final ByteOrder LITTLE_ENDIAN = new ByteOrder(&amp;ldquo;LITTLE_ENDIAN&amp;rdquo;); 4. public static ByteOrder nativeOrder() 5. public String toString() 1. private String name; 字节顺序的名称。&#xA;2. public static final ByteOrder BIG_ENDIAN = new ByteOrder(&amp;ldquo;BIG_ENDIAN&amp;rdquo;); 表示大端字节序的常量。在这个顺序中，多字节值的字节从最高位到最低位排列。&#xA;3. public static final ByteOrder LITTLE_ENDIAN = new ByteOrder(&amp;ldquo;LITTLE_ENDIAN&amp;rdquo;); 表示小端字节序的常量。在这个顺序中，多字节值的字节从最低位到最高位排列。&#xA;4. public static ByteOrder nativeOrder() 获取底层平台的本地字节序。&#xA;定义此方法是为了使性能敏感的Java代码可以分配与硬件具有相同字节序的直接缓冲区。当使用这样的缓冲区时，本地代码库通常更高效。&#xA;该方法返回运行此Java虚拟机的硬件的本机字节序。&#xA;public static ByteOrder nativeOrder() { return Bits.</description>
+    </item>
+    <item>
+      <title>ReadOnlyBufferException</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/ReadOnlyBufferException/</link>
+      <pubDate>Mon, 03 Jun 2024 12:16:40 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/ReadOnlyBufferException/</guid>
+      <description>1. public ReadOnlyBufferException() { } 在只读缓冲区上调用内容突变方法（如put或compact）时会引发此不受检查的异常。&#xA;1. public ReadOnlyBufferException() { } 构造此类的一个实例。</description>
+    </item>
+    <item>
+      <title>InvalidMarkException</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/InvalidMarkException/</link>
+      <pubDate>Mon, 03 Jun 2024 08:37:25 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/InvalidMarkException/</guid>
+      <description>1. public InvalidMarkException() { } 在未定义缓冲区标记的情况下尝试重置缓冲区时会引发此不受检查的异常。&#xA;1. public InvalidMarkException() { } 构造此类的一个实例。</description>
+    </item>
+    <item>
+      <title>BufferOverflowException</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/BufferOverflowException/</link>
+      <pubDate>Thu, 30 May 2024 08:23:29 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/BufferOverflowException/</guid>
+      <description>1. public BufferOverflowException() { } 当相对put操作达到目标缓冲区的限制时，会抛出此不受检查的异常。&#xA;1. public BufferOverflowException() { } 构造此类的一个实例。</description>
+    </item>
+    <item>
+      <title>BufferUnderflowException</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/BufferUnderflowException/</link>
+      <pubDate>Thu, 30 May 2024 08:22:41 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/BufferUnderflowException/</guid>
+      <description>1. public BufferUnderflowException() { } 当相对get操作达到源缓冲区的限制时，会抛出此不受检查的异常。&#xA;1. public BufferUnderflowException() { } 构造此类的一个实例。</description>
+    </item>
+    <item>
+      <title>ByteBuffer</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/ByteBuffer/</link>
+      <pubDate>Wed, 29 May 2024 08:29:26 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/ByteBuffer/</guid>
+      <description>1. final byte[] hb; 2. final int offset; 3. boolean isReadOnly; 4. ByteBuffer(int mark, int pos, int lim, int cap, byte[] hb, int offset) 5. ByteBuffer(int mark, int pos, int lim, int cap) 6. public static ByteBuffer allocateDirect(int capacity) 7. public static ByteBuffer allocate(int capacity) 8. public static ByteBuffer wrap(byte[] array, int offset, int length) 9. public static ByteBuffer wrap(byte[] array) 10. public abstract ByteBuffer slice(); 11. public abstract ByteBuffer duplicate(); 12.</description>
+    </item>
+    <item>
+      <title>Buffer</title>
+      <link>https://hongmao.run/jdk8-src-note/java/nio/Buffer/</link>
+      <pubDate>Wed, 29 May 2024 08:21:54 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/nio/Buffer/</guid>
+      <description>1. static final int SPLITERATOR_CHARACTERISTICS 2. private int mark = -1 3. private int position = 0 4. private int limit 5. private int capacity 6. long address 7. Buffer(int mark, int pos, int lim, int cap) 8. public final int capacity() 9. public final int position() 10. public final Buffer position(int newPosition) 11. public final int limit() 12. public final Buffer limit(int newLimit) 13. public final Buffer mark() 14.</description>
+    </item>
+  </channel>
+</rss>

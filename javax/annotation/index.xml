@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>annotation on JDK8源码阅读笔记</title>
+    <link>https://hongmao.run/jdk8-src-note/javax/annotation/</link>
+    <description>Recent content in annotation on JDK8源码阅读笔记</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 27 Sep 2022 08:40:07 +0800</lastBuildDate>
+    <atom:link href="https://hongmao.run/jdk8-src-note/javax/annotation/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resources</title>
+      <link>https://hongmao.run/jdk8-src-note/javax/annotation/Resources/</link>
+      <pubDate>Tue, 27 Sep 2022 08:40:07 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/javax/annotation/Resources/</guid>
+      <description>1. Resource[] value(); 此类用于允许多个资源声明。&#xA;@Documented @Retention(RUNTIME) @Target(TYPE) public @interface Resources { } 1. Resource[] value(); 用于多个资源声明的数组。</description>
+    </item>
+    <item>
+      <title>Resource</title>
+      <link>https://hongmao.run/jdk8-src-note/javax/annotation/Resource/</link>
+      <pubDate>Tue, 20 Sep 2022 19:08:20 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/javax/annotation/Resource/</guid>
+      <description>1. String name() default &amp;ldquo;&amp;rdquo;; 2. String lookup() default &amp;ldquo;&amp;rdquo;; 3. Class type() default java.lang.Object.class; 4. enum AuthenticationType 5. AuthenticationType authenticationType() default AuthenticationType.CONTAINER; 6. boolean shareable() default true; 7. String mappedName() default &amp;ldquo;&amp;rdquo;; 8. String description() default &amp;ldquo;&amp;rdquo;; Resource注解用于标记一个资源是应用所需要的。该注解可能应用于某个应用组件类，或者组件类的属性或方法。当该注解用于某应用组件的属性或者方法时，容器会在初始化该组件时注入一个请求资源的实例到该组件。如果该注解应用于一个组件类，&#x9;该注解会定义一个资源，然后应用可能在运行时查找它。&#xA;尽管该注解没有被标记为Inherited，开发工具仍需检查所有组件类的超类，以发现超类中所有使用该注解的地方。这些注解表明应用组件需要这些资源。注意，这些组件可能出现在超类的私有属性或方法上，容器在这些场景下也需要执行注入。&#xA;@Target({TYPE, FIELD, METHOD}) @Retention(RUNTIME) public @interface Resource { } 1. String name() default &amp;ldquo;&amp;rdquo;; 资源的JNDI名称。该注解标注到到字段上时，默认值为字段名。标注到方法上时，默认值是与该方法对应的JavaBeans属性名。标注到类上时，没有默认值，该属性必须指定。&#xA;2. String lookup() default &amp;ldquo;&amp;rdquo;; 引用指向的资源的名称。它可以使用全局JNDI名称链接到任何兼容的资源。&#xA;3. Class type() default java.lang.Object.class; 资源的Java类型。该注解标注到字段上时，默认值是字段的类型。标注到方法上时，默认值是JavaBeans属性的类型。标注到类上时，没有默认值，该属性必须指定。&#xA;4. enum AuthenticationType 资源的两种可能的身份验证类型。</description>
+    </item>
+  </channel>
+</rss>

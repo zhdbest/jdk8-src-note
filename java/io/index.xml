@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>io on JDK8源码阅读笔记</title>
+    <link>https://hongmao.run/jdk8-src-note/java/io/</link>
+    <description>Recent content in io on JDK8源码阅读笔记</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 27 May 2024 22:29:00 +0800</lastBuildDate>
+    <atom:link href="https://hongmao.run/jdk8-src-note/java/io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Closeable</title>
+      <link>https://hongmao.run/jdk8-src-note/java/io/Closeable/</link>
+      <pubDate>Mon, 27 May 2024 22:29:00 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/io/Closeable/</guid>
+      <description>1. public void close() throws IOException; Closeable是数据的源或目的地，它可以被关闭。调用close方法是为了释放对象持有的资源（如打开的文件）。&#xA;1. public void close() throws IOException; 关闭此流，并释放与它关联的任何系统资源。如果流已经被关闭，那么调用这个方法将不会有任何影响。&#xA;正如在AutoCloseable.close()中所指出的，关闭操作可能失败的情况需要特别注意。强烈建议在抛出IOException之前，先释放底层资源，并在内部将Closeable标记为已关闭。</description>
+    </item>
+  </channel>
+</rss>

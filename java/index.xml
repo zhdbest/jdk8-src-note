@@ -4,8 +4,9 @@
     <title>java on JDK8源码阅读笔记</title>
     <link>https://hongmao.run/jdk8-src-note/java/</link>
     <description>Recent content in java on JDK8源码阅读笔记</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 18 Jul 2021 14:09:47 +0800</lastBuildDate><atom:link href="https://hongmao.run/jdk8-src-note/java/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate></lastBuildDate>
+    <atom:link href="https://hongmao.run/jdk8-src-note/java/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

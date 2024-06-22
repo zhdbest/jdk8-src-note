@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>lang on JDK8源码阅读笔记</title>
+    <link>https://hongmao.run/jdk8-src-note/java/lang/</link>
+    <description>Recent content in lang on JDK8源码阅读笔记</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 24 May 2024 22:29:51 +0800</lastBuildDate>
+    <atom:link href="https://hongmao.run/jdk8-src-note/java/lang/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AutoCloseable</title>
+      <link>https://hongmao.run/jdk8-src-note/java/lang/AutoCloseable/</link>
+      <pubDate>Fri, 24 May 2024 22:29:51 +0800</pubDate>
+      <guid>https://hongmao.run/jdk8-src-note/java/lang/AutoCloseable/</guid>
+      <description>1. void close() throws Exception; 一个可能包含资源（比如文件或套接字句柄）的对象，在被关闭之前会一直持有这些资源。实现了AutoCloseable接口的对象，且该对象已在资源声明头部被声明，则该对象会在退出一个try-with-resources语句块时自动调用其close()方法。这种结构确保了及时释放资源，避免了资源耗尽异常以及可能发生的其他错误。&#xA;基类实现AutoCloseable接口是可以的，也是常见的情况，即使不是所有的子类或实例都会持有可释放的资源。对于那些需要完全泛化操作的代码，或者当知道AutoCloseable实例需要释放资源时，推荐使用try-with-resources语句。然而，在使用像java.util.stream.Stream这类同时支持基于I/O和非I/O形式的功能时，在采用非I/O形式时，通常不需要使用try-with-resources语句块。&#xA;1. void close() throws Exception; 关闭此资源，释放其持有的任何底层资源。这个方法会在由try-with-resources语句所管理的对象上自动调用。&#xA;尽管此接口方法声明可能会抛出异常，但强烈建议实现者声明具体的close方法以抛出更具体的异常，或者如果关闭操作不会失败，则根本不抛出异常。&#xA;关闭操作可能会失败的情况需要实现者特别注意。强烈建议在抛出异常之前先释放底层资源，并在内部将资源标记为已关闭。close方法不太可能会多次被调用，这样确保了资源能够及时释放。此外，这也减少了当资源包装其他资源或被其他资源包装时可能出现的问题。&#xA;强烈建议实现此接口的开发者也被不要让close方法抛出InterruptedException。&#xA;这个异常与线程的中断状态有关，如果InterruptedException被忽略，很可能会出现运行时的错误行为。&#xA;更一般地说，如果一个异常被忽略会引起问题，AutoCloseable的close方法就不应该抛出该异常。&#xA;请注意，与java.io.Closeable的close方法不同，这个close方法不要求是幂等的。换句话说，多次调用这个close方法可能会有一些可见的副作用，而Closeable的close如果多次调用则要求没有影响。&#xA;即便如此，仍强烈建议实现此接口的开发者使他们的close方法成为幂等的。</description>
+    </item>
+  </channel>
+</rss>
